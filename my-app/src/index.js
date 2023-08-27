@@ -3,6 +3,11 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import awsconfig from './aws-exports'; // Check the actual import path
+import {Amplify} from 'aws-amplify'; //Amplify is depreciated. Gotta have the brackets.
+
+
+Amplify.configure(awsconfig);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
