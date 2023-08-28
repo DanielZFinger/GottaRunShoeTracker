@@ -15,7 +15,7 @@ function App() {
   };
 
   return (
-    <Router>
+    <Router basePath="/GottaRunShoeTracker">
       <div>
         <h1>Cognito User Management</h1>
         <Routes>
