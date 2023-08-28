@@ -13,6 +13,7 @@ function App() {
     // For now, let's just log the navigation
     console.log('Navigating to Sign Up page');
   };
+  
 
   return (
     <Router>
