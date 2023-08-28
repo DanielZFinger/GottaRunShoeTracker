@@ -13,17 +13,16 @@ function App() {
     // For now, let's just log the navigation
     console.log('Navigating to Sign Up page');
   };
-  
 
   return (
     <Router>
       <div>
         <h1>Cognito User Management</h1>
         <Routes>
-          <Route path="/" element={<AuthForm navigateToSignUp={navigateToSignUp} />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/confirmation" element={<ConfirmationPage/>} />
-          <Route path="/dashboard" element={<DashboardPage/>} />
+          <Route path="/GottaRunShoeTracker" element={<AuthForm navigateToSignUp={navigateToSignUp} />} />
+          <Route path="/GottaRunShoeTracker/signup" element={<SignUpPage />} />
+          <Route path="/GottaRunShoeTracker/confirmation" element={<ConfirmationPage/>} />
+          <Route path="/GottaRunShoeTracker/dashboard" element={<DashboardPage/>} />
         </Routes>
       </div>
     </Router>
