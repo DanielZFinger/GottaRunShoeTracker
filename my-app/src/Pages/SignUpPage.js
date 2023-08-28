@@ -16,7 +16,7 @@ function SignUpPage() {
     try {
       const user = await Auth.signUp(email, password);
       console.log('User signed up:', user);
-      navigate('/confirmation');
+      navigate('/GottaRunShoeTracker/confirmation');
     } catch (error) {
       console.error('Sign Up error:', error);
       setErrorMessage('Sign Up error. Check your email and password.');
@@ -48,16 +48,6 @@ function SignUpPage() {
     setPassword(newPassword);
     setIsValidPassword(validatePassword(newPassword));
   };
-
-  // const handleSignUp = async () => {
-  //   try {
-  //     const user = await Auth.signUp(email, password);
-  //     console.log('User signed up:', user);
-  //   } catch (error) {
-  //     console.error('Sign Up error:', error);
-  //     setErrorMessage('Sign Up error. Check your email and password.');
-  //   }
-  // };
 
   return (
     <div>

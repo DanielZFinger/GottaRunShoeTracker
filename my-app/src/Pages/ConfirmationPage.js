@@ -5,7 +5,7 @@ function ConfirmationPage() {
   const navigate = useNavigate();
 
   const handleBackToSignIn = () => {
-    navigate('/'); // Navigate to the sign-in page
+    navigate('/GottaRunShoeTracker'); // Navigate to the sign-in page
   };
 
   return (
