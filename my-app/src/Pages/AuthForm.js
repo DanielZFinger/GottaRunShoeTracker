@@ -7,6 +7,7 @@ function AuthForm({navigateToSignUp}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
+  
 
   const navigate = useNavigate(); // Use useNavigate
 
@@ -18,9 +19,10 @@ function AuthForm({navigateToSignUp}) {
   const handleSignIn = async () => {
     try {
       const user = await Auth.signIn(email, password);
-      console.log('User logged in:', user);
+      console.log('User signed in:', user);
+      navigate('/dashboard'); // Navigate to the dashboard page upon successful sign-in
     } catch (error) {
-      console.log('Login error:', error);
+      console.error('Sign In error:', error);
       setErrorMessage('Invalid username or password. Please check your credentials.');
     }
   };

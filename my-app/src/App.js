@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import SignUpPage from './Pages/SignUpPage';
-
+import ConfirmationPage from './Pages/ConfirmationPage';
+import DashboardPage from './Pages/DashboardPage';
 
 function App() {
   const navigateToSignUp = () => {
@@ -20,6 +21,8 @@ function App() {
         <Routes>
           <Route path="/" element={<AuthForm navigateToSignUp={navigateToSignUp} />} />
           <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/confirmation" element={<ConfirmationPage/>} />
+          <Route path="/dashboard" element={<DashboardPage/>} />
         </Routes>
       </div>
     </Router>
