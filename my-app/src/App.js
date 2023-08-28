@@ -19,7 +19,7 @@ function App() {
       <div>
         <h1>Cognito User Management</h1>
         <Routes>
-          <Route path="/GottaRunShoeTracker" element={<AuthForm navigateToSignUp={navigateToSignUp} />} />
+          <Route path="/" element={<AuthForm navigateToSignUp={navigateToSignUp} />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/confirmation" element={<ConfirmationPage/>} />
           <Route path="/dashboard" element={<DashboardPage/>} />
