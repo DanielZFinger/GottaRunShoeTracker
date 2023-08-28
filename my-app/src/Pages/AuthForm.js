@@ -13,14 +13,14 @@ function AuthForm({navigateToSignUp}) {
 
   const handleSignUp = () => {
     navigateToSignUp();
-    navigate('/GottaRunShoeTracker/signup'); // Navigate to the sign-up page
+    navigate('/signup'); // Navigate to the sign-up page
   };
 
   const handleSignIn = async () => {
     try {
       const user = await Auth.signIn(email, password);
       console.log('User signed in:', user);
-      navigate('/GottaRunShoeTracker/dashboard'); // Navigate to the dashboard page upon successful sign-in
+      navigate('/dashboard'); // Navigate to the dashboard page upon successful sign-in
     } catch (error) {
       console.error('Sign In error:', error);
       setErrorMessage('Invalid username or password. Please check your credentials.');

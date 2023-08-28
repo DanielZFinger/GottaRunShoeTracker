@@ -16,7 +16,7 @@ function SignUpPage() {
     try {
       const user = await Auth.signUp(email, password);
       console.log('User signed up:', user);
-      navigate('/GottaRunShoeTracker/confirmation');
+      navigate('/confirmation');
     } catch (error) {
       console.error('Sign Up error:', error);
       setErrorMessage('Sign Up error. Check your email and password.');
