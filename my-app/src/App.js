@@ -1,7 +1,7 @@
 import './App.css';
 import AuthForm from './Pages/AuthForm';
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import SignUpPage from './Pages/SignUpPage';
 import ConfirmationPage from './Pages/ConfirmationPage';
