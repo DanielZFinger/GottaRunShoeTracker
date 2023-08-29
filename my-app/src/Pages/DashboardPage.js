@@ -5,29 +5,35 @@ import { getUsernameFromToken } from '../AuthUtils'; // Adjust the path
 function Dashboard() {
   const [userData, setUserData] = useState(null);
   const [username, setUsername] = useState('');
-  const payload = {
-    operation: 'create',
-    EmployeeID: 'Employee12345',
-    CustomerID: 'TestCustomer12345'
-  };
+
   
 
   useEffect(() => {
     async function fetchData() {
+    const oppy = "create";
+    const empID ="Employee12345";
+    const custID="TestCustomer12345";
+
+    const payload = {
+        operation: oppy,
+        EmployeeID: empID,
+        CustomerID: custID
+    };
       try {
         const session = await Auth.currentSession();
         const accessToken = session.getAccessToken().getJwtToken();
         console.log(accessToken);
 
         const response = await fetch('https://h4lh1cdrq6.execute-api.us-east-1.amazonaws.com/Dev/userdata', {
-            mode: 'no-cors',
             method: 'POST',
             headers: {
                 Accept: "application/json",
-                "Content-Type": "application.json"
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(payload)
         });
+        console.log(payload);
+        console.log(JSON.stringify(payload));
 
         if (response.ok) {
           const data = await response.json();
