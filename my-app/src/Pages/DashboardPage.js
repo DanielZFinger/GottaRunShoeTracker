@@ -11,8 +11,8 @@ function Dashboard() {
   useEffect(() => {
     async function fetchData() {
     const oppy = "create";
-    const empID ="Employee12345";
-    const custID="TestCustomer12345";
+    const empID ="NO-WAY-IT-WORKED-EMPLOYEE";
+    const custID="NO-WAY-IT-WORKED-CUSTOMER";
 
     const payload = {
         operation: oppy,
@@ -27,7 +27,6 @@ function Dashboard() {
         const response = await fetch('https://h4lh1cdrq6.execute-api.us-east-1.amazonaws.com/Dev/userdata', {
             method: 'POST',
             headers: {
-                Accept: "application/json",
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(payload)
