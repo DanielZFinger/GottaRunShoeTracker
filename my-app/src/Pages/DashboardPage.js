@@ -5,57 +5,55 @@ import { getUsernameFromToken } from '../AuthUtils'; // Adjust the path
 function Dashboard() {
   const [userData, setUserData] = useState(null);
   const [username, setUsername] = useState('');
+  const [operationValue, setOperationValue] = useState('');
+  const [employeeIDValue, setEmployeeIDValue] = useState('');
 
-  
+  const fetchData = async () => {
+    try {
+      const session = await Auth.currentSession();
+      const fetchedUsername = await getUsernameFromToken(); // Fetch the username here
+      setUsername(fetchedUsername); // Set the username state
 
-  useEffect(() => {
-    async function fetchData() {
-    const oppy = "create";
-    const empID ="NO-WAY-IT-WORKED-EMPLOYEE";
-    const custID="NO-WAY-IT-WORKED-CUSTOMER";
+      const payload = {
+        operation: operationValue,
+        EmployeeID: employeeIDValue,
+        CustomerID: fetchedUsername, // Use the fetched username
+      };
 
-    const payload = {
-        operation: oppy,
-        EmployeeID: empID,
-        CustomerID: custID
-    };
-      try {
-        const session = await Auth.currentSession();
-        const accessToken = session.getAccessToken().getJwtToken();
-        console.log(accessToken);
+      const accessToken = session.getAccessToken().getJwtToken();
+      console.log(accessToken);
 
-        const response = await fetch('https://h4lh1cdrq6.execute-api.us-east-1.amazonaws.com/Dev/userdata', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        });
-        console.log(payload);
-        console.log(JSON.stringify(payload));
-
-        if (response.ok) {
-          const data = await response.json();
-          setUserData(data);
-          console.log(data);
-        } else {
-          console.error('Error fetching data:', response.statusText);
+      const response = await fetch(
+        'https://h4lh1cdrq6.execute-api.us-east-1.amazonaws.com/Dev/userdata',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
         }
-
-        // Get the username from the token
-        const fetchedUsername = await getUsernameFromToken();
-        setUsername(fetchedUsername);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+      );
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
-
-    fetchData();
-  }, []);
+  };
 
   return (
     <div>
       <h1>Welcome, {username}!</h1>
+      <input
+        type="text"
+        placeholder="Operation"
+        value={operationValue}
+        onChange={(e) => setOperationValue(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="EmployeeID"
+        value={employeeIDValue}
+        onChange={(e) => setEmployeeIDValue(e.target.value)}
+      />
+      <button onClick={fetchData}>Submit</button>
       {/* Display userData or other content */}
     </div>
   );
