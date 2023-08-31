@@ -10,13 +10,67 @@ function Dashboard() {
   const [selectedModel, setSelectedModel] = useState('');
   const [employeeIDValue, setEmployeeIDValue] = useState('');
   const [retrievedData, setRetrievedData] = useState(null); // State for retrieved data
+  const [brands, setBrands]=useState([]);
+  const [models, setModels]=useState([]);
 
-  const brands = ['Hoka', 'Brooks', 'Saucony']; // List of brand options
-  const modelsByBrand = {
-    Hoka: ['Clifton', 'Bondi', 'Speedgoat'],
-    Brooks: ['Ghost', 'Adrenaline', 'Glycerin'],
-    Saucony: ['Ride', 'Guide', 'Kinvara'],
-  };
+//   fetch brands available
+  const fetchBrands = async () => {
+    try {
+        const brandPayload = {
+            operation: "retrieveBrand"
+        };
+        const response = await fetch(
+            'https://h4lh1cdrq6.execute-api.us-east-1.amazonaws.com/Dev/userdata',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(brandPayload),
+            }
+          );
+    
+          if (response.ok) {
+            const data = await response.json();
+            setBrands(data);
+            console.log(data);
+          } else {
+            console.error('Error fetching data:', response.statusText);
+          }
+    
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+    };
+    // fetch available models by brand
+    const fetchModels = async () => {
+        try {
+            const modelPayload = {
+                operation: "retrieveModels",
+            };
+            const response = await fetch(
+                'https://h4lh1cdrq6.execute-api.us-east-1.amazonaws.com/Dev/userdata',
+                {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(modelPayload),
+                }
+              );
+        
+              if (response.ok) {
+                const data = await response.json();
+                setModels(data);
+                console.log(data);
+              } else {
+                console.error('Error fetching data:', response.statusText);
+              }
+        
+            } catch (error) {
+              console.error('Error fetching data:', error);
+            }
+        };
 
   const handleBrandChange = (e) => {
     setSelectedBrand(e.target.value);
@@ -106,6 +160,8 @@ function Dashboard() {
   useEffect(() => {
     // fetchData();
     fetchRetrievedData(); // Fetch retrieved data immediately
+    fetchBrands();
+    fetchModels();
   }, []);
 
   return (
@@ -121,27 +177,30 @@ function Dashboard() {
       <select
         value={selectedBrand}
         onChange={(e) => setSelectedBrand(e.target.value)}
-      >
+        >
         <option value="">Select a Brand</option>
-        {brands.map((brand) => (
-          <option key={brand} value={brand}>
-            {brand}
-          </option>
+        {brands.map((item, index) => (
+            <option key={index} value={item.BrandName}>
+            {item.BrandName}
+            </option>
         ))}
       </select>
       <select
         value={selectedModel}
         onChange={(e) => setSelectedModel(e.target.value)}
-        disabled={!selectedBrand} // Disable model selection until a brand is selected
-      >
+        disabled={!selectedBrand}
+        >
         <option value="">Select a Model</option>
         {selectedBrand &&
-          modelsByBrand[selectedBrand].map((model) => (
-            <option key={model} value={model}>
-              {model}
-            </option>
-          ))}
-      </select>
+            retrievedData
+            .filter(item => item.Brand === selectedBrand)
+            .map((item, index) => (
+                <option key={index} value={item.Model}>
+                {item.Model}
+                </option>
+            ))}
+        </select>
+
       <button onClick={fetchData}>Create Order</button>
       <div>
         {/* Display retrieved data */}
