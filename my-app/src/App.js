@@ -6,6 +6,8 @@ import { useHistory } from 'react-router-dom';
 import SignUpPage from './Pages/SignUpPage';
 import ConfirmationPage from './Pages/ConfirmationPage';
 import DashboardPage from './Pages/DashboardPage';
+import OrderReports from './Pages/OrderReports';
+import ShoeCreation from './Pages/ShoeCreation';
 
 function App() {
   const navigateToSignUp = () => {
@@ -23,6 +25,8 @@ function App() {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/confirmation" element={<ConfirmationPage/>} />
           <Route path="/dashboard" element={<DashboardPage/>} />
+          <Route path="/order-reports" element={<OrderReports/>} />
+          <Route path ="/shoe-creation" element={<ShoeCreation/>}/>
         </Routes>
       </div>
     </HashRouter>

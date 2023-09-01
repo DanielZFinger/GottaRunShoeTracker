@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
-import { getUsernameFromToken } from '../AuthUtils'; // Adjust the path
+import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { getUsernameFromToken } from '../AuthUtils';
 
 function Dashboard() {
   const [userData, setUserData] = useState(null);
-  const [username, setUsername] = useState('');
-  const [brandName, setBrandName] = useState('');
-  const [selectedBrand, setSelectedBrand] = useState('');
-  const [selectedModel, setSelectedModel] = useState('');
+  const [username, setUsername] = useState('');//usernameID once we get it from etch function
+  const [selectedBrand, setSelectedBrand] = useState('');//chosen brand on the dropdown bar on the screen for user
+  const [selectedModel, setSelectedModel] = useState('');//chosen model on the dropdown bar on the screen for user
   const [employeeIDValue, setEmployeeIDValue] = useState('');
-  const [retrievedData, setRetrievedData] = useState(null); // State for retrieved data
-  const [brands, setBrands]=useState(['']);
-  const [models, setModels]=useState(['']);
+  const [brands, setBrands]=useState(['']);//brands available pulled from the fetch function
+  const [models, setModels]=useState(['']);//models available pulled from the fetch function
+  const navigate = useNavigate(); // Use useNavigate
+
 
 //   fetch brands available
   const fetchBrands = async () => {
@@ -42,6 +44,7 @@ function Dashboard() {
           console.error('Error fetching data:', error);
         }
     };
+
     // fetch available models by brand
     const fetchModels = async () => {
         try {
@@ -72,11 +75,13 @@ function Dashboard() {
             }
         };
 
+  //this just changes the brand selected by the user. When user chooses a new brand this is changed.
   const handleBrandChange = (e) => {
     setSelectedBrand(e.target.value);
     setSelectedModel('');
   };
 
+  //this is where a new order is created. Once the user selects the model and brand and hits create order this gets called. An order is subsequently passe to the backend.
   const fetchData = async () => {
     try {
       const session = await Auth.currentSession();
@@ -92,8 +97,6 @@ function Dashboard() {
       };
 
       const accessToken = session.getAccessToken().getJwtToken();
-    //   console.log(accessToken);
-      console.log("reg fetch")
 
       const response = await fetch(
         'https://h4lh1cdrq6.execute-api.us-east-1.amazonaws.com/Dev/userdata',
@@ -109,7 +112,6 @@ function Dashboard() {
       if (response.ok) {
         const data = await response.json();
         setUserData(data);
-        console.log(data);
       } else {
         console.error('Error fetching data:', response.statusText);
       }
@@ -119,50 +121,28 @@ function Dashboard() {
     }
   };
 
-  const fetchRetrievedData = async () => {
-    try {
-      const session = await Auth.currentSession();
-      const fetchedUsername = await getUsernameFromToken();
-
-      const retrievePayload = {
-        operation: 'retrieveAll',
-        CustomerID: fetchedUsername, // Use the fetched username
-      };
-
-      const accessToken = session.getAccessToken().getJwtToken();
-      console.log(accessToken);
-      console.log(retrievePayload);
-
-      const response = await fetch(
-        'https://h4lh1cdrq6.execute-api.us-east-1.amazonaws.com/Dev/userdata',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(retrievePayload),
-        }
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        setRetrievedData(data);
-        console.log(data);
-      } else {
-        console.error('Error fetching retrieved data:', response.statusText);
-      }
-
-    } catch (error) {
-      console.error('Error fetching retrieved data:', error);
-    }
-  };
-
+//   call the brands and models available on load
   useEffect(() => {
-    // fetchData();
-    fetchRetrievedData(); // Fetch retrieved data immediately
     fetchBrands();
     fetchModels();
   }, []);
+
+//   navigate to the order reports menu
+  const handleOrderReports = async () => {
+    try {
+      navigate('/order-reports'); // Navigate to the order reports
+    } catch (error) {
+      console.error('Navigation Error', error);
+    }
+  };
+  //   navigate to the shoe creation page
+  const handleShoeCreation = async () => {
+    try {
+      navigate('/shoe-creation'); // Navigate to the shoe creation page
+    } catch (error) {
+      console.error('Navigation Error', error);
+    }
+  };
 
   return (
     <div>
@@ -173,7 +153,7 @@ function Dashboard() {
         value={employeeIDValue}
         onChange={(e) => setEmployeeIDValue(e.target.value)}
       />
-      {/* select shoe brand */}
+      {/* select shoe brand from available brands */}
       <select
         value={selectedBrand}
         onChange={(e) => setSelectedBrand(e.target.value)}
@@ -185,21 +165,7 @@ function Dashboard() {
             </option>
         ))}
       </select>
-      {/* <select
-        value={selectedModel}
-        onChange={(e) => setSelectedModel(e.target.value)}
-        disabled={!selectedBrand}
-        >
-        <option value="">Select a Model</option>
-        {selectedBrand &&
-            retrievedData
-            .filter(item => item.Brand === selectedBrand)
-            .map((item, index) => (
-                <option key={index} value={item.Model}>
-                {item.Model}
-                </option>
-            ))}
-        </select> */}
+      {/* button to show available models for chosen brand */}
         <select
         value={selectedModel}
         onChange={(e) => setSelectedModel(e.target.value)}
@@ -215,17 +181,12 @@ function Dashboard() {
                 </option>
             ))}
         </select>
-
-
+      {/* button to create order */}
       <button onClick={fetchData}>Create Order</button>
       <div>
-        {/* Display retrieved data */}
-        {retrievedData && (
-          <div>
-            <h2>Retrieved Data</h2>
-            <pre>{JSON.stringify(retrievedData, null, 2)}</pre>
-          </div>
-        )}
+        {/* Button to navigate to Order Reports */}
+      <button onClick={handleOrderReports}>Order Reports</button>
+      <button onClick={handleShoeCreation}>Shoe Creation Page</button>
       </div>
     </div>
   );
