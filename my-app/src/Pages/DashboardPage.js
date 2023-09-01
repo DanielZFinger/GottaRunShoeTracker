@@ -10,8 +10,8 @@ function Dashboard() {
   const [selectedModel, setSelectedModel] = useState('');
   const [employeeIDValue, setEmployeeIDValue] = useState('');
   const [retrievedData, setRetrievedData] = useState(null); // State for retrieved data
-  const [brands, setBrands]=useState([]);
-  const [models, setModels]=useState([]);
+  const [brands, setBrands]=useState(['']);
+  const [models, setModels]=useState(['']);
 
 //   fetch brands available
   const fetchBrands = async () => {
@@ -185,7 +185,7 @@ function Dashboard() {
             </option>
         ))}
       </select>
-      <select
+      {/* <select
         value={selectedModel}
         onChange={(e) => setSelectedModel(e.target.value)}
         disabled={!selectedBrand}
@@ -199,7 +199,23 @@ function Dashboard() {
                 {item.Model}
                 </option>
             ))}
+        </select> */}
+        <select
+        value={selectedModel}
+        onChange={(e) => setSelectedModel(e.target.value)}
+        disabled={!selectedBrand}
+        >
+        <option value="">Select a Model</option>
+        {selectedBrand &&
+            models
+            .filter(item => item.Brand === selectedBrand)
+            .map((item, index) => (
+                <option key={index} value={item.Model}>
+                {item.Model}
+                </option>
+            ))}
         </select>
+
 
       <button onClick={fetchData}>Create Order</button>
       <div>
