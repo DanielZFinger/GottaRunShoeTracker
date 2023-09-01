@@ -10,6 +10,8 @@ function ShoeCreation() {
     const [modelValue, setModelValue] = useState('');//value of the model the user just created
     const [brands, setBrands]=useState(['']);//brands available pulled from the fetch function
     const [selectedBrand, setSelectedBrand] = useState('');//chosen brand on the dropdown bar on the screen for user
+    const navigate = useNavigate(); // Use useNavigate
+
 
     // fetch function that is called when user inputs a new brand name in the provided field. This function calls the backend and creates a new brand
     const createBrand = async () => {
@@ -105,10 +107,21 @@ function ShoeCreation() {
             fetchBrands();
         }, []);
 
+        // naviagte home
+      const handleHomeButton = async () => {
+        try {
+          navigate('/dashboard'); // Navigate to the home page
+        } catch (error) {
+          console.error('Navigation Error', error);
+        }
+      };
+
     return (
         <div>
           <h1>Shoe Creation</h1>
           <p>This is the Shoe Creation page.</p>
+          {/* button to return home */}
+          <button onClick={handleHomeButton}>Return Home</button>
           <input
             type="text"
             placeholder="Brand Name"

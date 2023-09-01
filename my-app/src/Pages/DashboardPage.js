@@ -12,6 +12,8 @@ function Dashboard() {
   const [employeeIDValue, setEmployeeIDValue] = useState('');
   const [brands, setBrands]=useState(['']);//brands available pulled from the fetch function
   const [models, setModels]=useState(['']);//models available pulled from the fetch function
+  const [isFieldsFilled, setIsFieldsFilled] = useState(false);//checks to make sure all fields for the create order button are filled. So makes sure employeeID, brand and model all have values
+  const [isEmployeeFilled, setIsEmployeeFilled]=useState(false);//checks to see if employee is filled on or not
   const navigate = useNavigate(); // Use useNavigate
 
 
@@ -75,10 +77,24 @@ function Dashboard() {
             }
         };
 
+const handleEmployeeChange = (e) => {
+    setEmployeeIDValue(e);
+    if(e.length<1){
+        setIsEmployeeFilled(false);
+    }
+    else{
+        setIsEmployeeFilled(true);
+    }
+    };
   //this just changes the brand selected by the user. When user chooses a new brand this is changed.
   const handleBrandChange = (e) => {
     setSelectedBrand(e.target.value);
-    setSelectedModel('');
+    setSelectedModelValue('');
+    setIsFieldsFilled(false); // Reset the flag when the brand changes
+  };
+  const setSelectedModelValue = (value) => {
+    setSelectedModel(value);
+    setIsFieldsFilled(!!(selectedBrand && value));
   };
 
   //this is where a new order is created. Once the user selects the model and brand and hits create order this gets called. An order is subsequently passe to the backend.
@@ -151,7 +167,7 @@ function Dashboard() {
         type="text"
         placeholder="EmployeeID"
         value={employeeIDValue}
-        onChange={(e) => setEmployeeIDValue(e.target.value)}
+        onChange={(e) => handleEmployeeChange(e.target.value)}
       />
       {/* select shoe brand from available brands */}
       <select
@@ -168,7 +184,7 @@ function Dashboard() {
       {/* button to show available models for chosen brand */}
         <select
         value={selectedModel}
-        onChange={(e) => setSelectedModel(e.target.value)}
+        onChange={(e) => setSelectedModelValue(e.target.value)}
         disabled={!selectedBrand}
         >
         <option value="">Select a Model</option>
@@ -182,7 +198,12 @@ function Dashboard() {
             ))}
         </select>
       {/* button to create order */}
-      <button onClick={fetchData}>Create Order</button>
+      <button
+        onClick={fetchData}
+        disabled={!isFieldsFilled || !isEmployeeFilled} // Disable the button when required fields are empty
+        >
+        Create Order
+      </button>
       <div>
         {/* Button to navigate to Order Reports */}
       <button onClick={handleOrderReports}>Order Reports</button>
