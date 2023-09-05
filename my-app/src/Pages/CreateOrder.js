@@ -10,12 +10,24 @@ function CreateOrder() {
     const [userLevel, setUserLevel]=useState(['']);
     const [selectedBrand, setSelectedBrand] = useState('');//chosen brand on the dropdown bar on the screen for user
     const [selectedModel, setSelectedModel] = useState('');//chosen model on the dropdown bar on the screen for user
+    const [selectedSize, setSelectedSize] = useState('');
+    const [selectedWidth, setSelectedWidth] = useState('');
+    const [selectedColor, setSelectedColor] = useState('');
+    const selectedStatus = useState('Shipping');
+    const [selectedOrderedDate, setSelectedOrderedDate] = useState('');
+    const [selectedCompletedDate, setSelectedCompletedDate] = useState('');
+    const [selectedGender, setSelectedGender] = useState('');
     const [employeeIDValue, setEmployeeIDValue] = useState('');
     const [brands, setBrands]=useState(['']);//brands available pulled from the fetch function
     const [models, setModels]=useState(['']);//models available pulled from the fetch function
     const [isFieldsFilled, setIsFieldsFilled] = useState(false);//checks to make sure all fields for the create order button are filled. So makes sure employeeID, brand and model all have values  
   const navigate = useNavigate();
-
+  const sizes = [
+    "4.0", "4.5", "5.0", "5.5", "6.0", "6.5", "7.0", "7.5", "8.0", "8.5",
+    "9.0", "9.5", "10.0", "10.5", "11.0", "11.5", "12.0", "12.5", "13.0", "13.5", "14.0", "14.5", "15.0", "15.5", "16.0"
+  ];
+  const genders = ["Male", "Female"];
+  const width = ["A","AA","B","D","2E","4E"];
 
   //   fetch brands available
   const fetchBrands = async () => {
@@ -99,6 +111,13 @@ function CreateOrder() {
         operation: "create",
         Brand: selectedBrand,
         Model: selectedModel,
+        Size: selectedSize,
+        Width: selectedWidth,
+        Color: selectedColor,
+        Status: selectedStatus,
+        OrderedDate: selectedOrderedDate,
+        CompletedDate: selectedCompletedDate,
+        Gender: selectedGender,
         EmployeeID: employeeIDValue,
         CustomerID: fetchedUsername,
       };
@@ -208,6 +227,39 @@ function CreateOrder() {
                 </option>
             ))}
         </select>
+        {/* select size */}
+        <label>Select Size:</label>
+        <select value={selectedSize} onChange={setSelectedSize}>
+          <option value="">-- Select a Size --</option>
+          {sizes.map((size) => (
+            <option key={size} value={size}>
+              {size}
+            </option>
+          ))}
+        </select>
+        {selectedSize && <p>You selected size: {selectedSize}</p>}
+        {/* select width */}
+        <label>Select Width:</label>
+        <select value={selectedSize} onChange={setSelectedWidth}>
+          <option value="">-- Select a Width --</option>
+          {width.map((width) => (
+            <option key={width} value={width}>
+              {width}
+            </option>
+          ))}
+        </select>
+        {selectedSize && <p>You selected size: {selectedSize}</p>}
+        {/* select gender */}
+        <label>Select Gender:</label>
+        <select value={selectedSize} onChange={setSelectedGender}>
+          <option value="">-- Select a Gender --</option>
+          {genders.map((gender) => (
+            <option key={gender} value={gender}>
+              {gender}
+            </option>
+          ))}
+        </select>
+        {selectedSize && <p>You selected size: {selectedSize}</p>}
       {/* button to create order */}
       <button
         onClick={fetchData}
