@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { getUsernameFromToken } from '../AuthUtils';
 
-function EmployeeDashboard() {
+function CreateOrder() {
     const [userData, setUserData] = useState(null);
     const [username, setUsername] = useState('');//usernameID once we get it from etch function
     const [userLevel, setUserLevel]=useState(['']);
@@ -219,4 +219,4 @@ function EmployeeDashboard() {
   );
 }
 
-export default EmployeeDashboard;
+export default CreateOrder;

@@ -9,6 +9,7 @@ import CustomerDashboard from './CustomerDashboard'; // Import a customer-specif
 import OrderReports from './OrderReports';
 import ShoeCreation from './ShoeCreation';
 import CreateOrder from './CreateOrder';
+import MyOrders from './MyOrder';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -33,6 +34,14 @@ function Dashboard() {
   const [showOrderPage, setShowOrderPage] = useState(false);
   const [showCreateShoePage, setCreateShoePage] = useState(false);
   const [showCreateOrderPage, setCreateOrderPage] = useState(false);
+  const [showMyOrdersPage, setMyOrdersPage] = useState(false);
+
+  const handleMyOrdersPage = () => {
+    setMyOrdersPage(true);
+  };
+  const handleMyOrdersPageOff = () => {
+    setMyOrdersPage(false);
+  };
 
   const handleCreateOrderPage = () => {
     setCreateOrderPage(true);
@@ -138,6 +147,8 @@ function Dashboard() {
           { text: 'Create Order', requiredLevel: 'Employee'},
           { text: 'Shoe Creation', requiredLevel: 'Employee'},
           { text: 'Order Reports', requiredLevel: 'Employee'},
+          { text: 'My Orders'},
+          { text: 'Settings'},
         ].map((item, index) => (
           (item.requiredLevel === undefined || item.requiredLevel === userLevel) &&
           <ListItem key={item.text} disablePadding>
@@ -147,16 +158,26 @@ function Dashboard() {
                   handleShowOrderPage();
                   handleCreateShoePageOff();
                   handleCreateOrderPageOff();
+                  handleMyOrdersPageOff();
                 }
                 else if (item.text === 'Shoe Creation') {
                   handleCreateShoePage();
                   handleShowOrderPageOff();
                   handleCreateOrderPageOff();
+                  handleMyOrdersPageOff();
                 }
                 else if (item.text === 'Create Order') {
                   handleCreateOrderPage();
                   handleShowOrderPageOff();
                   handleCreateShoePageOff();
+                  handleMyOrdersPageOff();
+
+                }
+                else if (item.text === 'My Orders') {
+                  handleCreateOrderPageOff();
+                  handleShowOrderPageOff();
+                  handleCreateShoePageOff();
+                  handleMyOrdersPage();
                 }
               }}>
               <ListItemIcon>
@@ -168,18 +189,6 @@ function Dashboard() {
         ))}
       </List>
       <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
       </Drawer>
       <Box
         component="main"
@@ -196,6 +205,7 @@ function Dashboard() {
       {showOrderPage && userLevel === 'Employee' && <OrderReports />}
       {showCreateShoePage && userLevel === 'Employee' && <ShoeCreation />}
       {showCreateOrderPage && userLevel === 'Employee' && <CreateOrder />}
+      {showMyOrdersPage && <MyOrders/>}
         
       </Box>
     </Box>
