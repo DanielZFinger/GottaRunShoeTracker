@@ -107,21 +107,11 @@ function ShoeCreation() {
             fetchBrands();
         }, []);
 
-        // naviagte home
-      const handleHomeButton = async () => {
-        try {
-          navigate('/dashboard'); // Navigate to the home page
-        } catch (error) {
-          console.error('Navigation Error', error);
-        }
-      };
-
     return (
         <div>
           <h1>Shoe Creation</h1>
           <p>This is the Shoe Creation page.</p>
-          {/* button to return home */}
-          <button onClick={handleHomeButton}>Return Home</button>
+          
           <input
             type="text"
             placeholder="Brand Name"

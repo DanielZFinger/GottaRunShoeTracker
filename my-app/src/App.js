@@ -19,7 +19,6 @@ function App() {
   return (
     <HashRouter>
       <div>
-        <h1>Cognito User Management</h1>
         <Routes>
           <Route path="/" element={<AuthForm navigateToSignUp={navigateToSignUp} />} />
           <Route path="/signup" element={<SignUpPage />} />

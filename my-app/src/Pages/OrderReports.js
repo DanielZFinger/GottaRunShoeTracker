@@ -52,23 +52,12 @@ function OrderReports() {
       useEffect(() => {
         fetchRetrievedData(); // Fetch retrieved data immediately
       }, []);
-
-      // naviagte home
-      const handleHomeButton = async () => {
-        try {
-          navigate('/dashboard'); // Navigate to the home page
-        } catch (error) {
-          console.error('Navigation Error', error);
-        }
-      };
     
   return (
     <div>
     <div>
       <h1>Order Reports</h1>
       <p>This is the Order Reports page.</p>
-      {/* button to return home */}
-      <button onClick={handleHomeButton}>Return Home</button>
     </div>
     <div>
     {/* Display retrieved data */}
