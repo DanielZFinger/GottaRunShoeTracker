@@ -6,6 +6,8 @@ dynamodb_client = boto3.resource('dynamodb')
 table = dynamodb_client.Table('OrderTable')
 brandTable = dynamodb_client.Table('BrandTable')
 modelTable = dynamodb_client.Table('ModelTable')
+userTable = dynamodb_client.Table('UserTable')
+colorTable = dynamodb_client.Table('ColorTable')
 
 def lambda_handler(event, context):
     print(json.dumps(event))
@@ -13,8 +15,183 @@ def lambda_handler(event, context):
     operation = body['operation']
     # operation = event['operation']
     
+    # *****|All Color Functions|*****
+    if operation == 'retrieveColors':
+        try:
+            # response = table.get_item(Key={'CustomerID': customer_id})
+            # order = response.get('Item')
+            response = colorTable.scan(
+            )
+            
+            colors = response.get('Items', [])
+            if colors:
+                mResponse = "Color info succesfully retrieved!"
+                response = {
+                    "statusCode": 200,
+                    "headers": {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json",
+                        "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                    },
+                "body": json.dumps(colors)
+                }
+                return response
+            else:
+                mResponse = "Color info failed to retrieve!"
+                response = {
+                    "statusCode": 403,
+                    "headers": {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json",
+                        "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                    },
+                "body": json.dumps(mResponse)
+                }
+                return response
+        except Exception as e:
+            mResponse = "User info couldn't be reached!"
+            response = {
+                "statusCode": 402,
+                "headers": {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                },
+            "body": json.dumps(mResponse)
+            }
+            return response
+    elif operation == 'createColor':
+        brand = body['Brand']
+        color = body['Color']
+        try:
+            # response = table.get_item(Key={'CustomerID': customer_id})
+            # order = response.get('Item')
+            messageResponse = colorTable.put_item(
+                Item={
+                    'Color': color,
+                    'BrandName': brand
+                }
+            )
+            mResponse = "Color succesfully added!"
+            response = {
+                "statusCode": 200,
+                "headers": {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                },
+            "body": json.dumps(mResponse)
+            }
+            return response
+        except Exception as e:
+            mResponse = "Color failed to be added!"
+            response = {
+                "statusCode": 408,
+                "headers": {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                },
+            "body": json.dumps(mResponse)
+            }
+            return response
+    
+    # *****|All User Functions|*****  
+    if operation == 'retrieveUserInfo':
+        userID = body['UserID']
+        try:
+            # response = table.get_item(Key={'CustomerID': customer_id})
+            # order = response.get('Item')
+            response = userTable.scan(
+                FilterExpression='UserID = :cid',
+                ExpressionAttributeValues={':cid': userID}
+            )
+            
+            models = response.get('Items', [])
+            if models:
+                mResponse = "User info succesfully retrieved!"
+                response = {
+                    "statusCode": 200,
+                    "headers": {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json",
+                        "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                    },
+                "body": json.dumps(models)
+                }
+                return response
+            else:
+                mResponse = "User info failed to retrieve!"
+                response = {
+                    "statusCode": 403,
+                    "headers": {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json",
+                        "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                    },
+                "body": json.dumps(mResponse)
+                }
+                return response
+        except Exception as e:
+            mResponse = "User info couldn't be reached!"
+            response = {
+                "statusCode": 402,
+                "headers": {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                },
+            "body": json.dumps(mResponse)
+            }
+            return response
+    
     # *****|All Model Functions|*****
-    if operation == 'retrieveModels':
+    if operation == 'createModel':
+        brand = body['Brand']
+        model = body['Model']
+        try:
+            # response = table.get_item(Key={'CustomerID': customer_id})
+            # order = response.get('Item')
+            messageResponse = modelTable.put_item(
+                Item={
+                    'Model': model,
+                    'Brand': brand
+                }
+            )
+            mResponse = "Model succesfully added!"
+            response = {
+                "statusCode": 200,
+                "headers": {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                },
+            "body": json.dumps(mResponse)
+            }
+            return response
+        except Exception as e:
+            mResponse = "Model failed to be added!"
+            response = {
+                "statusCode": 408,
+                "headers": {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                },
+            "body": json.dumps(mResponse)
+            }
+            return response
+    elif operation == 'retrieveModels':
         try:
             # response = table.get_item(Key={'CustomerID': customer_id})
             # order = response.get('Item')
@@ -63,7 +240,44 @@ def lambda_handler(event, context):
             return response
     
     # *****|All Brand Functions|*****
-    if operation == 'retrieveBrand':
+    if operation == 'createBrand':
+        brand = body['Brand']
+        # brand = event['Brand']
+        try:
+            # response = table.get_item(Key={'CustomerID': customer_id})
+            # order = response.get('Item')
+            messageResponse = brandTable.put_item(
+                Item={
+                    'BrandName': brand
+                }
+            )
+            mResponse = "Brand succesfully added!"
+            response = {
+                "statusCode": 200,
+                "headers": {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                },
+            "body": json.dumps(mResponse)
+            }
+            return response
+        except Exception as e:
+            mResponse = "Brand failed to be added!"
+            response = {
+                "statusCode": 407,
+                "headers": {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                },
+            "body": json.dumps(mResponse)
+            }
+            return response
+            
+    elif operation == 'retrieveBrand':
         try:
             # response = table.get_item(Key={'CustomerID': customer_id})
             # order = response.get('Item')
@@ -159,6 +373,13 @@ def lambda_handler(event, context):
         customer_id = body['CustomerID']
         brand = body['Brand']
         model = body['Model']
+        size = body['Size']
+        width = body['Width']
+        color = body['Color']
+        status = body['Status']
+        orderedDate = body['OrderedDate']
+        completedDate = body['CompletedDate']
+        gender = body['Gender']
         
         # Create a new order in the table
         try:
@@ -172,6 +393,13 @@ def lambda_handler(event, context):
                     'CustomerID': customer_id,
                     'Brand': brand,
                     'Model': model,
+                    'Size': size,
+                    'Width': width,
+                    'Color': color,
+                    'Status': status,
+                    'Ordered Date': orderedDate,
+                    'Completed Date': completedDate,
+                    'Gender': gender
                 }
             )
             mResponse = "Succesfully created order!"
@@ -200,7 +428,7 @@ def lambda_handler(event, context):
             return response
     
     # retrieve info regarding a specific order
-    elif operation == 'retrieveAll':
+    elif operation == 'retrieveMyOrders':
         customer_id = body['CustomerID']
 
         try:
@@ -253,6 +481,57 @@ def lambda_handler(event, context):
             "body": json.dumps(mResponse)
             }
             return response
+            
+    elif operation == 'retrieveAll':
+
+        try:
+            # Initial scan
+            response = table.scan()
+            # items.extend(response.get('Items', []))
+            # order = response.get('Items', [])
+            items = response.get('Items',[])
+    
+            print(items)
+            if items:
+                mResponse = "Orders successfully retrieved!"
+                response = {
+                    "statusCode": 200,
+                    "headers": {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json",
+                        "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                    },
+                    "body": json.dumps(items)
+                }
+                return response
+            else:
+                mResponse = "Order failed to retrieve!"
+                response = {
+                    "statusCode": 411,
+                    "headers": {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json",
+                        "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                    },
+                "body": json.dumps(mResponse)
+                }
+                return response    
+                
+        except Exception as e:
+            mResponse = "Order failed to update!"
+            response = {
+                "statusCode": 412,
+                "headers": {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                },
+            "body": json.dumps(mResponse)
+            }
+            return response        
     else:
         mResponse = "Invalid operation!"
         response = {
