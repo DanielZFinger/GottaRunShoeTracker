@@ -4,10 +4,34 @@ import { Auth } from 'aws-amplify';
 import { useHistory } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { getUsernameFromToken } from '../AuthUtils';
+//MUI
+import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+
+
+const columns = [
+  { field: 'OrderID', headerName: 'Order ID', flex: 1 },
+  { field: 'Brand', headerName: 'Brand', flex: 1 },
+  { field: 'Status', headerName: 'Status', flex: 1 },
+  { field: 'Model', headerName: 'Model', flex: 1 },
+  { field: 'CustomerID', headerName: 'Customer ID', flex: 1 },
+  { field: 'Completed Date', headerName: 'Completed Date', flex: 1 },
+  { field: 'Color', headerName: 'Color', flex: 1, hideable: true},
+  { field: 'EmployeeID', headerName: 'Employee ID', flex: 1},
+  { field: 'Gender', headerName: 'Gender', flex: 1},
+  { field: 'Ordered Date', headerName: 'Ordered Date', flex: 1},
+  { field: 'Size', headerName: 'Size', flex: 1},
+  { field: 'Width', headerName: 'Width', flex: 1}
+
+];
+// Define the columns to hide
+const columnsToHide = ['EmployeeID', 'CustomerID', 'Gender'];
 
 function OrderReports() {
     const [retrievedData, setRetrievedData] = useState(null); // State for retrieved data
-    const navigate = useNavigate(); // Use useNavigate
+
+
+    const getRowId = (row) => row.OrderID; // Specify the unique id for each row
+
 
     // Fetch function to call in our order data
     const fetchRetrievedData = async () => {
@@ -55,19 +79,31 @@ function OrderReports() {
     
   return (
     <div>
-    <div>
       <h1>Order Reports</h1>
-      <p>This is the Order Reports page.</p>
-    </div>
-    <div>
-    {/* Display retrieved data */}
-    {retrievedData && (
-      <div>
-        <h2>Retrieved Data</h2>
-        <pre>{JSON.stringify(retrievedData, null, 2)}</pre>
-      </div>
-    )}
-    </div>
+      {/* Display retrieved data */}
+      {retrievedData && (
+        <div style={{ height: 400, width: '100%' }}>
+          <DataGrid
+            rows={retrievedData}
+            columns={columns.map((column) => ({
+              ...column,
+              hide: columnsToHide.includes(column.field),
+              renderCell: (params) => {
+                return (
+                  <div
+                    title={params.value}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {params.value}
+                  </div>
+                );
+              },
+            }))}
+            pageSize={5}
+            getRowId={getRowId}
+          />;
+        </div>
+      )}
     </div>
   );
 }
