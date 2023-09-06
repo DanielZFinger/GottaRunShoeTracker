@@ -8,6 +8,7 @@ import { getUsernameFromToken } from '../AuthUtils';
 function ShoeCreation() {
     const [brandValue, setBrandValue] = useState('');//value of the brand the user just created
     const [modelValue, setModelValue] = useState('');//value of the model the user just created
+    const [colorValue, setColorValue] = useState('');
     const [brands, setBrands]=useState(['']);//brands available pulled from the fetch function
     const [selectedBrand, setSelectedBrand] = useState('');//chosen brand on the dropdown bar on the screen for user
     const navigate = useNavigate(); // Use useNavigate
@@ -49,6 +50,36 @@ function ShoeCreation() {
             operation: "createModel",
             Brand: selectedBrand,
             Model: modelValue
+          };
+          const response = await fetch(
+            'https://h4lh1cdrq6.execute-api.us-east-1.amazonaws.com/Dev/userdata',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(payload),
+            }
+          );
+    
+          if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+          } else {
+            console.error('Error fetching data:', response.statusText);
+          }
+    
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+      //   fetch function that is called when a user creates a new color. This calls the backend and creates a new color for the respective brand it is attatched to
+      const createColor = async () => {
+        try {  
+          const payload = {
+            operation: "createColor",
+            Brand: selectedBrand,
+            Color: colorValue
           };
           const response = await fetch(
             'https://h4lh1cdrq6.execute-api.us-east-1.amazonaws.com/Dev/userdata',
@@ -141,6 +172,27 @@ function ShoeCreation() {
           />
           {/* create new model on click */}
           <button onClick={createModel}>Create Model</button>
+          {/* select shoe brand from available brands */}
+          <select
+                value={selectedBrand}
+                onChange={(e) => setSelectedBrand(e.target.value)}
+                >
+                <option value="">Select a Brand</option>
+                {brands.map((item, index) => (
+                    <option key={index} value={item.BrandName}>
+                    {item.BrandName}
+                    </option>
+                ))}
+          </select>
+          {/* create new color on click */}
+          <input
+            type="text"
+            placeholder="Color Code"
+            value={colorValue}
+            onChange={(e) => setColorValue(e.target.value)}
+          />
+          {/* create new model on click */}
+          <button onClick={createColor}>Create Color</button>
         </div>
       );
 }

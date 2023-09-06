@@ -21,6 +21,7 @@ function CreateOrder() {
     const [customerIDValue, setCustomerIDValue] = useState('');
     const [brands, setBrands]=useState(['']);//brands available pulled from the fetch function
     const [models, setModels]=useState(['']);//models available pulled from the fetch function
+    const [colors, setColors]=useState(['']);
     const [isFieldsFilled, setIsFieldsFilled] = useState(false);//checks to make sure all fields for the create order button are filled. So makes sure employeeID, brand and model all have values  
   const navigate = useNavigate();
   const sizes = [
@@ -60,11 +61,11 @@ function CreateOrder() {
         }
     };
 
-    // fetch available models by brand
-    const fetchModels = async () => {
+    // fetch available colors by models
+    const fetchColors = async () => {
         try {
-            const modelPayload = {
-                operation: "retrieveModels",
+            const colorPayload = {
+                operation: "retrieveColors",
             };
             const response = await fetch(
                 'https://h4lh1cdrq6.execute-api.us-east-1.amazonaws.com/Dev/userdata',
@@ -73,13 +74,13 @@ function CreateOrder() {
                   headers: {
                     'Content-Type': 'application/json',
                   },
-                  body: JSON.stringify(modelPayload),
+                  body: JSON.stringify(colorPayload),
                 }
               );
         
               if (response.ok) {
                 const data = await response.json();
-                setModels(data);
+                setColors(data);
                 console.log(data);
               } else {
                 console.error('Error fetching data:', response.statusText);
@@ -90,16 +91,50 @@ function CreateOrder() {
             }
         };
 
+  // fetch available models by brand
+  const fetchModels = async () => {
+    try {
+        const modelPayload = {
+            operation: "retrieveModels",
+        };
+        const response = await fetch(
+            'https://h4lh1cdrq6.execute-api.us-east-1.amazonaws.com/Dev/userdata',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(modelPayload),
+            }
+          );
+    
+          if (response.ok) {
+            const data = await response.json();
+            setModels(data);
+            console.log(data);
+          } else {
+            console.error('Error fetching data:', response.statusText);
+          }
+    
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+    };      
+
   //this just changes the brand selected by the user. When user chooses a new brand this is changed.
   const handleBrandChange = (e) => {
     setSelectedBrand(e.target.value);
     setSelectedModelValue('');
+    setSelectedColorValue('');
     setIsFieldsFilled(false); // Reset the flag when the brand changes
   };
   const setSelectedModelValue = (value) => {
     setSelectedModel(value);
     setIsFieldsFilled(!!(selectedBrand && value));
   };
+  const setSelectedColorValue = (value) => {
+    setSelectedColor(value);
+  }
 
   //this is where a new order is created. Once the user selects the model and brand and hits create order this gets called. An order is subsequently passe to the backend.
   const fetchData = async () => {
@@ -195,6 +230,7 @@ function CreateOrder() {
     fetchBrands();
     fetchModels();
     fetchUserData();
+    fetchColors();
   }, []);
 
   return (
@@ -228,7 +264,22 @@ function CreateOrder() {
                 </option>
             ))}
         </select>
-        {/* select size */}
+        {/* button to show available colors for chosen brand */}
+        <select
+        value={selectedColor}
+        onChange={(e) => setSelectedColorValue(e.target.value)}
+        disabled={!selectedBrand}
+        >
+        <option value="">Select a Color</option>
+        {selectedBrand &&
+            colors
+            .filter(item => item.BrandName === selectedBrand)
+            .map((item, index) => (
+                <option key={index} value={item.Color}>
+                {item.Color}
+                </option>
+            ))}
+        </select>
         {/* select size */}
         <label>Select Size:</label>
         <select value={selectedSize} onChange={(e) => setSelectedSize(e.target.value)}>
