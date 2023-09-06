@@ -10,6 +10,7 @@ import OrderReports from './OrderReports';
 import ShoeCreation from './ShoeCreation';
 import CreateOrder from './CreateOrder';
 import MyOrders from './MyOrder';
+import ActiveOrders from './ActiveOrders';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -35,6 +36,7 @@ function Dashboard() {
   const [showCreateShoePage, setCreateShoePage] = useState(false);
   const [showCreateOrderPage, setCreateOrderPage] = useState(false);
   const [showMyOrdersPage, setMyOrdersPage] = useState(false);
+  const [showActiveOrdersPage, setActiveOrdersPage] = useState(false);
 
   const handleMyOrdersPage = () => {
     setMyOrdersPage(true);
@@ -63,6 +65,12 @@ function Dashboard() {
   const handleShowOrderPageOff = () => {
     setShowOrderPage(false);
   };
+  const handleShowActiveOrdersPage = ()=> {
+    setActiveOrdersPage(true);
+  }
+  const handleShowActiveOrdersPageOff = ()=> {
+    setActiveOrdersPage(false);
+  }
 
 
 
@@ -146,6 +154,7 @@ function Dashboard() {
         {[
           { text: 'Create Order', requiredLevel: 'Employee'},
           { text: 'Shoe Creation', requiredLevel: 'Employee'},
+          { text: 'Active Orders', requiredLevel: 'Employee'},
           { text: 'Order Reports', requiredLevel: 'Employee'},
           { text: 'My Orders'},
           { text: 'Settings'},
@@ -159,18 +168,21 @@ function Dashboard() {
                   handleCreateShoePageOff();
                   handleCreateOrderPageOff();
                   handleMyOrdersPageOff();
+                  handleShowActiveOrdersPageOff();
                 }
                 else if (item.text === 'Shoe Creation') {
                   handleCreateShoePage();
                   handleShowOrderPageOff();
                   handleCreateOrderPageOff();
                   handleMyOrdersPageOff();
+                  handleShowActiveOrdersPageOff();
                 }
                 else if (item.text === 'Create Order') {
                   handleCreateOrderPage();
                   handleShowOrderPageOff();
                   handleCreateShoePageOff();
                   handleMyOrdersPageOff();
+                  handleShowActiveOrdersPageOff();
 
                 }
                 else if (item.text === 'My Orders') {
@@ -178,6 +190,14 @@ function Dashboard() {
                   handleShowOrderPageOff();
                   handleCreateShoePageOff();
                   handleMyOrdersPage();
+                  handleShowActiveOrdersPageOff();
+                }
+                else if (item.text === 'Active Orders') {
+                  handleCreateOrderPageOff();
+                  handleShowOrderPageOff();
+                  handleCreateShoePageOff();
+                  handleMyOrdersPageOff();
+                  handleShowActiveOrdersPage();
                 }
               }}>
               <ListItemIcon>
@@ -205,6 +225,7 @@ function Dashboard() {
       {showOrderPage && userLevel === 'Employee' && <OrderReports />}
       {showCreateShoePage && userLevel === 'Employee' && <ShoeCreation />}
       {showCreateOrderPage && userLevel === 'Employee' && <CreateOrder />}
+      {showActiveOrdersPage && userLevel === 'Employee' && <ActiveOrders/>}
       {showMyOrdersPage && <MyOrders/>}
         
       </Box>

@@ -10,6 +10,7 @@ import ConfirmationPage from './Pages/ConfirmationPage';
 import DashboardPage from './Pages/DashboardPage';
 import OrderReports from './Pages/OrderReports';
 import ShoeCreation from './Pages/ShoeCreation';
+import ActiveOrders from './Pages/ActiveOrders';
 
 function App() {
   const navigateToSignUp = () => {
@@ -29,6 +30,7 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage/>} />
           <Route path="/order-reports" element={<OrderReports/>} />
           <Route path ="/shoe-creation" element={<ShoeCreation/>}/>
+          <Route path ="/active-orders" element={<ActiveOrders/>}/>
         </Routes>
       </div>
     </HashRouter>

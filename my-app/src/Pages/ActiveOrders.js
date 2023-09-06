@@ -6,8 +6,7 @@ import { getUsernameFromToken } from '../AuthUtils';
 //MUI
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 
-
-function MyOrder(){
+function ActiveOrders(){
     const [retrievedData, setRetrievedData] = useState(null); // State for retrieved data
 
     const columns = [
@@ -32,17 +31,10 @@ function MyOrder(){
     // Fetch function to call in our order data
     const fetchRetrievedData = async () => {
         try {
-          const session = await Auth.currentSession();
-          const fetchedUsername = await getUsernameFromToken();
-    
           const retrievePayload = {
-            operation: 'retrieveMyOrders',
-            CustomerID: fetchedUsername, // Use the fetched username
+            operation: 'retrieveActiveOrders',
+            completedDate: "Incomplete",
           };
-    
-          const accessToken = session.getAccessToken().getJwtToken();
-          console.log(accessToken);
-          console.log(retrievePayload);
     
           const response = await fetch(
             'https://h4lh1cdrq6.execute-api.us-east-1.amazonaws.com/Dev/userdata',
@@ -75,7 +67,7 @@ function MyOrder(){
 
     return(
       <div>
-      <h1>My Orders</h1>
+      <h1>Active Orders</h1>
       {/* Display retrieved data */}
       {retrievedData && (
         <div style={{ height: 400, width: '100%' }}>
@@ -102,4 +94,4 @@ function MyOrder(){
     </div>
     );
 }
-export default MyOrder;
+export default ActiveOrders;

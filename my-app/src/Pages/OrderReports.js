@@ -14,11 +14,11 @@ const columns = [
   { field: 'Status', headerName: 'Status', flex: 1 },
   { field: 'Model', headerName: 'Model', flex: 1 },
   { field: 'CustomerID', headerName: 'Customer ID', flex: 1 },
-  { field: 'Completed Date', headerName: 'Completed Date', flex: 1 },
+  { field: 'CompletedDate', headerName: 'Completed Date', flex: 1 },
   { field: 'Color', headerName: 'Color', flex: 1, hideable: true},
   { field: 'EmployeeID', headerName: 'Employee ID', flex: 1},
   { field: 'Gender', headerName: 'Gender', flex: 1},
-  { field: 'Ordered Date', headerName: 'Ordered Date', flex: 1},
+  { field: 'OrderedDate', headerName: 'Ordered Date', flex: 1},
   { field: 'Size', headerName: 'Size', flex: 1},
   { field: 'Width', headerName: 'Width', flex: 1}
 
