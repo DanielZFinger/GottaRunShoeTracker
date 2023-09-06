@@ -3,6 +3,9 @@ import { Auth } from 'aws-amplify';
 import { useHistory } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { getUsernameFromToken } from '../AuthUtils';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for styling
+
 
 function CreateOrder() {
     const [userData, setUserData] = useState(null);
@@ -65,6 +68,17 @@ function CreateOrder() {
     }
     return false;
   });
+
+  // toastify success notification
+  const handleCreateOrder = () => {
+    // Your order creation logic here
+  
+    // Show a success notification
+    toast.success('Order Placed', {
+      position: 'top-right',
+      autoClose: 3000, // Notification will automatically close after 3 seconds
+    });
+  };
 
   //   fetch brands available
   const fetchBrands = async () => {
@@ -290,6 +304,16 @@ function CreateOrder() {
     }
   };
 
+  const resetVals = async () => {
+    setSelectedCustomer("");
+    setSelectedBrand("");
+    setSelectedModel("");
+    setSelectedSize("");
+    setSelectedWidth("");
+    setSelectedGender("");
+    setSelectedColor("");
+  }
+
   return (
     <div>
         <h1>Create an Order</h1>
@@ -389,9 +413,13 @@ function CreateOrder() {
             </option>
           ))}
         </select>
-      {/* button to create order */}
+      {/* button to create order and reset all values*/}
       <button
-        onClick={fetchData}
+      onClick={() => {
+        fetchData();
+        resetVals();
+        handleCreateOrder();
+      }}
         disabled={!isFieldsFilled || selectedCustomer==="" || selectedColor==="" || selectedGender==="" || selectedSize==="" || selectedWidth==="" || selectedColor===""} // Disable the button when required fields are empty
         >
         Create Order
