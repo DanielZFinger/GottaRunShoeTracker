@@ -1,8 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
+import './CSS/ShoeCreation.css';
 import { useHistory } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { getUsernameFromToken } from '../AuthUtils';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for styling
+// MUI styling below
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import {Select, MenuItem} from "@mui/material";
+import TextField from '@mui/material/TextField';
+
 
 
 function ShoeCreation() {
@@ -13,6 +24,35 @@ function ShoeCreation() {
     const [selectedBrand, setSelectedBrand] = useState('');//chosen brand on the dropdown bar on the screen for user
     const navigate = useNavigate(); // Use useNavigate
 
+    // toastify success notification
+  const handleCreateBrand = () => { 
+    // Show a success notification
+    setBrandValue('');
+    toast.success('Brand Created', {
+      position: 'top-right',
+      autoClose: 5000, // Notification will automatically close after 5 seconds
+    });
+  };
+  const handleCreateModel = () => { 
+    // Show a success notification
+    setModelValue('');
+    setBrandValue('');
+    setSelectedBrand('');
+    toast.success('Model Created', {
+      position: 'top-right',
+      autoClose: 5000, // Notification will automatically close after 5 seconds
+    });
+  };
+  const handleCreateColor = () => { 
+    // Show a success notification
+    setColorValue('');
+    setBrandValue('');
+    setSelectedBrand('');
+    toast.success('Color Created', {
+      position: 'top-right',
+      autoClose: 5000, // Notification will automatically close after 5 seconds
+    });
+  };
 
     // fetch function that is called when user inputs a new brand name in the provided field. This function calls the backend and creates a new brand
     const createBrand = async () => {
@@ -139,60 +179,68 @@ function ShoeCreation() {
         }, []);
 
     return (
-        <div>
-          <h1>Shoe Creation</h1>
-          <p>This is the Shoe Creation page.</p>
-          
-          <input
+        <div className="body">
+          <Box className="typography-text">
+          <h1>Brand Creation</h1>  
+          <Typography>To Create A Brand Simply Type The Brand Name Below and Click "Create Brand"</Typography> 
+          </Box>       
+          <TextField sx={{m: "2%"}}
             type="text"
             placeholder="Brand Name"
             value={brandValue}
             onChange={(e) => setBrandValue(e.target.value)}
+            input
           />
-          <button onClick={createBrand}>Create Brand</button>
+          <Button sx={{m:"2%"}} variant="contained"  onClick={() => {
+            handleCreateBrand();
+            createBrand();
+            }}disabled={brandValue===""}>Create Brand</Button>
           {/* choose the brand for the new model user is going to add */}
+          <Box className="typography-text">
+          <h1>Model And Color Creation</h1>  
+          <Typography>To Create A Model Or Color Simply Select A Brand To Be Applied, Type The Name Of Your Color or Model and Click "Create"</Typography>
+          <Button sx={{fontSize: "50%"}}>Recently Created Brand Not Showing Up? Click Here To Refresh.</Button>
+          </Box>
           {/* select shoe brand from available brands */}
-            <select
+            <TextField sx={{m:"2%"}}
                 value={selectedBrand}
-                onChange={(e) => setSelectedBrand(e.target.value)}
+                onChange={(e) => setSelectedBrand(e.target.value)} select label="Choose A Brand For This Model To Be Applied"
                 >
-                <option value="">Select a Brand</option>
+                <MenuItem value="">Select a Brand</MenuItem>
                 {brands.map((item, index) => (
-                    <option key={index} value={item.BrandName}>
+                    <MenuItem key={index} value={item.BrandName}>
                     {item.BrandName}
-                    </option>
+                    </MenuItem>
                 ))}
-            </select>
+            </TextField>
           {/* create new model on click */}
-          <input
+          <div className='text-field-container'>
+          <TextField
             type="text"
             placeholder="Model Name"
             value={modelValue}
             onChange={(e) => setModelValue(e.target.value)}
+            input
           />
           {/* create new model on click */}
-          <button onClick={createModel}>Create Model</button>
+          <Button variant="contained" onClick={() => {
+            handleCreateModel();
+            createModel();
+            }}disabled={modelValue==="" || selectedBrand===""}>Create Model</Button>
           {/* select shoe brand from available brands */}
-          <select
-                value={selectedBrand}
-                onChange={(e) => setSelectedBrand(e.target.value)}
-                >
-                <option value="">Select a Brand</option>
-                {brands.map((item, index) => (
-                    <option key={index} value={item.BrandName}>
-                    {item.BrandName}
-                    </option>
-                ))}
-          </select>
-          {/* create new color on click */}
-          <input
+          <TextField
             type="text"
             placeholder="Color Code"
             value={colorValue}
             onChange={(e) => setColorValue(e.target.value)}
+            input
           />
           {/* create new model on click */}
-          <button onClick={createColor}>Create Color</button>
+          <Button variant="contained" onClick={() => {
+            handleCreateColor();
+            createColor();
+            }} disabled={colorValue==="" || selectedBrand===""}>Create Color</Button>
+        </div>
         </div>
       );
 }

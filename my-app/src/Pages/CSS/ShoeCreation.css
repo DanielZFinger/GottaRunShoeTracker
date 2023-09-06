@@ -1,0 +1,20 @@
+.body{
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    /* justify-content: center; */
+    padding: 2%;
+    margin: 5%;
+    min-height: 100vh;
+}
+
+.text-field-container {
+    margin: 2%;
+    display: flex;
+    gap: 20px; /* Adjust the gap as needed */
+    align-items: center; /* Vertically align items */
+  }
+
+  .typography-text{
+    margin: 2%;
+  }
