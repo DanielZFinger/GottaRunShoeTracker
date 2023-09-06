@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import './CSS/CreateOrder.css'
 import { Auth } from 'aws-amplify';
 import { useHistory } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { getUsernameFromToken } from '../AuthUtils';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for styling
+// MUI styling below
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import {Select, MenuItem} from "@mui/material";
+import TextField from '@mui/material/TextField';
 
 
 function CreateOrder() {
@@ -316,106 +322,111 @@ function CreateOrder() {
   }
 
   return (
-    <div>
+    <div className="body">
         <h1>Create an Order</h1>
       {/* select a customer from available customers */}
       {/* Search input for filtering customers */}
-      <input
+      <label>Select a Customer:</label>
+      <TextField
         type="text"
         placeholder="Search for a customer"
         value={filterText}
         onChange={handleFilterChange}
+        label="Search for a customer"
       />
 
       {/* Select a customer from available customers */}
-      <select
+      <TextField
         value={selectedCustomer}
-        onChange={(e) => setSelectedCustomer(e.target.value)}
+        onChange={(e) => setSelectedCustomer(e.target.value)} select label="Customer"
       >
-        <option value="">Select a Customer</option>
+        <MenuItem value="">Select a Customer</MenuItem>
         {filteredCustomers.map((item, index) => (
-          <option key={index} value={item.UserID}>
+          <MenuItem key={index} value={item.UserID}>
             {item.Email} | {item.FirstName} {item.LastName}
-          </option>
+          </MenuItem>
         ))}
-      </select>
+      </TextField>
       {/* select shoe brand from available brands */}
-      <select
+      <label>Select Brand:</label>
+      <TextField
         value={selectedBrand}
-        onChange={(e) => setSelectedBrand(e.target.value)}
+        onChange={(e) => setSelectedBrand(e.target.value)} select label="Brand"
         >
-        <option value="">Select a Brand</option>
+        <MenuItem value="">Select a Brand</MenuItem>
         {brands.map((item, index) => (
-            <option key={index} value={item.BrandName}>
+            <MenuItem key={index} value={item.BrandName}>
             {item.BrandName}
-            </option>
+            </MenuItem>
         ))}
-      </select>
+      </TextField>
       {/* button to show available models for chosen brand */}
-        <select
+      <label>Select Model:</label>
+        <TextField
         value={selectedModel}
         onChange={(e) => setSelectedModelValue(e.target.value)}
-        disabled={!selectedBrand}
+        disabled={!selectedBrand} select label="Model"
         >
-        <option value="">Select a Model</option>
+        <MenuItem value="">Select a Model</MenuItem>
         {selectedBrand &&
             models
             .filter(item => item.Brand === selectedBrand)
             .map((item, index) => (
-                <option key={index} value={item.Model}>
+                <MenuItem key={index} value={item.Model}>
                 {item.Model}
-                </option>
+                </MenuItem>
             ))}
-        </select>
+        </TextField>
         {/* button to show available colors for chosen brand */}
-        <select
+        <label>Select Color:</label>
+        <TextField
         value={selectedColor}
         onChange={(e) => setSelectedColorValue(e.target.value)}
-        disabled={!selectedBrand}
+        disabled={!selectedBrand} select label="Color"
         >
-        <option value="">Select a Color</option>
+        <MenuItem value="">Select a Color</MenuItem>
         {selectedBrand &&
             colors
             .filter(item => item.BrandName === selectedBrand)
             .map((item, index) => (
-                <option key={index} value={item.Color}>
+                <MenuItem key={index} value={item.Color}>
                 {item.Color}
-                </option>
+                </MenuItem>
             ))}
-        </select>
+        </TextField>
         {/* select size */}
         <label>Select Size:</label>
-        <select value={selectedSize} onChange={(e) => setSelectedSize(e.target.value)}>
-          <option value="">-- Select a Size --</option>
+        <TextField value={selectedSize} onChange={(e) => setSelectedSize(e.target.value)} select label="Size">
+          <MenuItem value="">-- Select a Size --</MenuItem>
           {sizes.map((size) => (
-            <option key={size} value={size}>
+            <MenuItem key={size} value={size}>
               {size}
-            </option>
+            </MenuItem>
           ))}
-        </select>
+        </TextField>
 
         {/* select width */}
         <label>Select Width:</label>
-        <select value={selectedWidth} onChange={(e) => setSelectedWidth(e.target.value)}>
-          <option value="">-- Select a Width --</option>
+        <TextField value={selectedWidth} onChange={(e) => setSelectedWidth(e.target.value)} select label="Width">
+          <MenuItem value="">-- Select a Width --</MenuItem>
           {width.map((width) => (
-            <option key={width} value={width}>
+            <MenuItem key={width} value={width}>
               {width}
-            </option>
+            </MenuItem>
           ))}
-        </select>
+        </TextField>
         {/* select gender */}
         <label>Select Gender:</label>
-        <select value={selectedGender} onChange={(e) => setSelectedGender(e.target.value)}>
-          <option value="">-- Select a Gender --</option>
+        <TextField value={selectedGender} onChange={(e) => setSelectedGender(e.target.value)} select label="Gender">
+          <MenuItem value="">-- Select a Gender --</MenuItem>
           {genders.map((gender) => (
-            <option key={gender} value={gender}>
+            <MenuItem key={gender} value={gender}>
               {gender}
-            </option>
+            </MenuItem>
           ))}
-        </select>
+        </TextField>
       {/* button to create order and reset all values this is also where we call the popup notification*/}
-      <button
+      <Button variant="contained"
       onClick={() => {
         fetchData();
         resetVals();
@@ -424,7 +435,7 @@ function CreateOrder() {
         disabled={!isFieldsFilled || selectedCustomer==="" || selectedColor==="" || selectedGender==="" || selectedSize==="" || selectedWidth==="" || selectedColor===""} // Disable the button when required fields are empty
         >
         Create Order
-      </button>
+      </Button>
     </div>
   );
 }
