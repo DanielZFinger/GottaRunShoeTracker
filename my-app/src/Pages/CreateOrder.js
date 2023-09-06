@@ -10,34 +10,36 @@ import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for styling
 function CreateOrder() {
     const [userData, setUserData] = useState(null);
     const [username, setUsername] = useState('');//usernameID once we get it from etch function
-    const [userLevel, setUserLevel]=useState(['']);
+    const [userLevel, setUserLevel]=useState(['']);//level of said user ex. Customer, Employee, Admin
     const [selectedBrand, setSelectedBrand] = useState('');//chosen brand on the dropdown bar on the screen for user
     const [selectedModel, setSelectedModel] = useState('');//chosen model on the dropdown bar on the screen for user
-    const [selectedSize, setSelectedSize] = useState('');
-    const [selectedWidth, setSelectedWidth] = useState('');
-    const [selectedColor, setSelectedColor] = useState('');
-    const [selectedStatus, setSelectedState] = useState('Shipping');
-    const [selectedOrderedDate, setSelectedOrderedDate] = useState(new Date());
-    const [selectedCompletedDate, setSelectedCompletedDate] = useState('Incomplete');
-    const [selectedGender, setSelectedGender] = useState('');
-    const [employeeIDValue, setEmployeeIDValue] = useState('');
-    const [customerIDValue, setCustomerIDValue] = useState('');
-    const [selectedCustomer, setSelectedCustomer] = useState('');
+    const [selectedSize, setSelectedSize] = useState('');//chosen shoe size from dropdown
+    const [selectedWidth, setSelectedWidth] = useState('');//chosen shoe width from dropdown
+    const [selectedColor, setSelectedColor] = useState('');//chosen color from dropdown
+    const [selectedStatus, setSelectedState] = useState('Shipping');//status of the shipping. All are default set to shipping when order is placed
+    const [selectedOrderedDate, setSelectedOrderedDate] = useState(new Date());//date of the order when placed
+    const [selectedCompletedDate, setSelectedCompletedDate] = useState('Incomplete');//date when order is completed--Not completed when order is placed
+    const [selectedGender, setSelectedGender] = useState('');//chosen shoe gender from dropdown
+    const [employeeIDValue, setEmployeeIDValue] = useState('');//employees ID so we can track who placed the order
+    const [customerIDValue, setCustomerIDValue] = useState('');//customer ID so we can track who we ordered for
+    const [selectedCustomer, setSelectedCustomer] = useState('');//customer info like email and name
     const [brands, setBrands]=useState(['']);//brands available pulled from the fetch function
     const [models, setModels]=useState(['']);//models available pulled from the fetch function
-    const [colors, setColors]=useState(['']);
-    const [customers, setCustomers]=useState(['']);
+    const [colors, setColors]=useState(['']);//colors avaliable pulled from fetch function
+    const [customers, setCustomers]=useState(['']);//customers available pulled from fetch fuction
     const [isFieldsFilled, setIsFieldsFilled] = useState(false);//checks to make sure all fields for the create order button are filled. So makes sure employeeID, brand and model all have values  
     const navigate = useNavigate();
+    // default sizes,width and gender of shoes
     const sizes = [
       "4.0", "4.5", "5.0", "5.5", "6.0", "6.5", "7.0", "7.5", "8.0", "8.5",
       "9.0", "9.5", "10.0", "10.5", "11.0", "11.5", "12.0", "12.5", "13.0", "13.5", "14.0", "14.5", "15.0", "15.5", "16.0"
     ];
     const genders = ["Male", "Female"];
     const width = ["A","AA","B","D","2E","4E"];
-    const [filterText, setFilterText] = useState('');
+    
+    const [filterText, setFilterText] = useState('');//filter for when searching up a user by email or name
 
-      //   call the brands and models available on load
+    //   call the brands and models available on load
   useEffect(() => {
     fetchBrands();
     fetchModels();
@@ -70,13 +72,11 @@ function CreateOrder() {
   });
 
   // toastify success notification
-  const handleCreateOrder = () => {
-    // Your order creation logic here
-  
+  const handleCreateOrder = () => { 
     // Show a success notification
     toast.success('Order Placed', {
       position: 'top-right',
-      autoClose: 3000, // Notification will automatically close after 3 seconds
+      autoClose: 5000, // Notification will automatically close after 5 seconds
     });
   };
 
@@ -304,6 +304,7 @@ function CreateOrder() {
     }
   };
 
+  // reset all the selected values
   const resetVals = async () => {
     setSelectedCustomer("");
     setSelectedBrand("");
@@ -413,7 +414,7 @@ function CreateOrder() {
             </option>
           ))}
         </select>
-      {/* button to create order and reset all values*/}
+      {/* button to create order and reset all values this is also where we call the popup notification*/}
       <button
       onClick={() => {
         fetchData();
