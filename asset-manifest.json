@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/GottaRunShoeTracker/static/css/main.4f83cc4c.css",
-    "main.js": "/GottaRunShoeTracker/static/js/main.24822ed2.js",
+    "main.css": "/GottaRunShoeTracker/static/css/main.e8b60b3f.css",
+    "main.js": "/GottaRunShoeTracker/static/js/main.720516b0.js",
     "static/js/787.28cb0dcd.chunk.js": "/GottaRunShoeTracker/static/js/787.28cb0dcd.chunk.js",
     "index.html": "/GottaRunShoeTracker/index.html",
-    "main.4f83cc4c.css.map": "/GottaRunShoeTracker/static/css/main.4f83cc4c.css.map",
-    "main.24822ed2.js.map": "/GottaRunShoeTracker/static/js/main.24822ed2.js.map",
+    "main.e8b60b3f.css.map": "/GottaRunShoeTracker/static/css/main.e8b60b3f.css.map",
+    "main.720516b0.js.map": "/GottaRunShoeTracker/static/js/main.720516b0.js.map",
     "787.28cb0dcd.chunk.js.map": "/GottaRunShoeTracker/static/js/787.28cb0dcd.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.4f83cc4c.css",
-    "static/js/main.24822ed2.js"
+    "static/css/main.e8b60b3f.css",
+    "static/js/main.720516b0.js"
   ]
 }
