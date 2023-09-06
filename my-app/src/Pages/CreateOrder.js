@@ -12,24 +12,59 @@ function CreateOrder() {
     const [selectedModel, setSelectedModel] = useState('');//chosen model on the dropdown bar on the screen for user
     const [selectedSize, setSelectedSize] = useState('');
     const [selectedWidth, setSelectedWidth] = useState('');
-    const [selectedColor, setSelectedColor] = useState('red');
+    const [selectedColor, setSelectedColor] = useState('');
     const [selectedStatus, setSelectedState] = useState('Shipping');
     const [selectedOrderedDate, setSelectedOrderedDate] = useState(new Date());
     const [selectedCompletedDate, setSelectedCompletedDate] = useState('Incomplete');
     const [selectedGender, setSelectedGender] = useState('');
     const [employeeIDValue, setEmployeeIDValue] = useState('');
     const [customerIDValue, setCustomerIDValue] = useState('');
+    const [selectedCustomer, setSelectedCustomer] = useState('');
     const [brands, setBrands]=useState(['']);//brands available pulled from the fetch function
     const [models, setModels]=useState(['']);//models available pulled from the fetch function
     const [colors, setColors]=useState(['']);
+    const [customers, setCustomers]=useState(['']);
     const [isFieldsFilled, setIsFieldsFilled] = useState(false);//checks to make sure all fields for the create order button are filled. So makes sure employeeID, brand and model all have values  
-  const navigate = useNavigate();
-  const sizes = [
-    "4.0", "4.5", "5.0", "5.5", "6.0", "6.5", "7.0", "7.5", "8.0", "8.5",
-    "9.0", "9.5", "10.0", "10.5", "11.0", "11.5", "12.0", "12.5", "13.0", "13.5", "14.0", "14.5", "15.0", "15.5", "16.0"
-  ];
-  const genders = ["Male", "Female"];
-  const width = ["A","AA","B","D","2E","4E"];
+    const navigate = useNavigate();
+    const sizes = [
+      "4.0", "4.5", "5.0", "5.5", "6.0", "6.5", "7.0", "7.5", "8.0", "8.5",
+      "9.0", "9.5", "10.0", "10.5", "11.0", "11.5", "12.0", "12.5", "13.0", "13.5", "14.0", "14.5", "15.0", "15.5", "16.0"
+    ];
+    const genders = ["Male", "Female"];
+    const width = ["A","AA","B","D","2E","4E"];
+    const [filterText, setFilterText] = useState('');
+
+      //   call the brands and models available on load
+  useEffect(() => {
+    fetchBrands();
+    fetchModels();
+    fetchUserData();
+    fetchColors();
+    fetchCustomerData();
+  }, []);
+
+  // Function to handle filter text changes
+  const handleFilterChange = (e) => {
+    setFilterText(e.target.value);
+  };
+
+  // Check if customers is defined and not null
+  if (!customers || customers.length === 0) {
+    return (
+      <div>
+        <p>No customers available.</p>
+      </div>
+    );
+  }
+
+  // Filter customers based on the filter text
+  const filteredCustomers = customers.filter((item) => {
+    // Check if Email property is defined before calling toLowerCase
+    if (item.Email) {
+      return item.Email.toLowerCase().includes(filterText.toLowerCase());
+    }
+    return false;
+  });
 
   //   fetch brands available
   const fetchBrands = async () => {
@@ -155,7 +190,7 @@ function CreateOrder() {
         CompletedDate: selectedCompletedDate,
         Gender: selectedGender,
         EmployeeID: employeeIDValue,
-        CustomerID: fetchedUsername,
+        CustomerID: selectedCustomer,
       };
 
       const accessToken = session.getAccessToken().getJwtToken();
@@ -184,7 +219,7 @@ function CreateOrder() {
     }
   };
 
-  //this is where user data is retrieved
+  //this is where user data is retrieved for the employee
   const fetchUserData = async () => {
     try {
       const session = await Auth.currentSession();
@@ -225,17 +260,60 @@ function CreateOrder() {
     }
   };
 
-  //   call the brands and models available on load
-  useEffect(() => {
-    fetchBrands();
-    fetchModels();
-    fetchUserData();
-    fetchColors();
-  }, []);
+  //this is where user data is retrieved for all customers
+  const fetchCustomerData = async () => {
+    try { 
+      const payload = {
+        operation: "retrieveAllCustomers"
+      };
+    
+      const response = await fetch(
+        'https://h4lh1cdrq6.execute-api.us-east-1.amazonaws.com/Dev/userdata',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data); // Make sure the data is received correctly
+        setCustomers(data);
+      } else {
+        console.error('Error fetching data:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
   return (
     <div>
         <h1>Create an Order</h1>
+      {/* select a customer from available customers */}
+      {/* Search input for filtering customers */}
+      <input
+        type="text"
+        placeholder="Search for a customer"
+        value={filterText}
+        onChange={handleFilterChange}
+      />
+
+      {/* Select a customer from available customers */}
+      <select
+        value={selectedCustomer}
+        onChange={(e) => setSelectedCustomer(e.target.value)}
+      >
+        <option value="">Select a Customer</option>
+        {filteredCustomers.map((item, index) => (
+          <option key={index} value={item.UserID}>
+            {item.Email} | {item.FirstName} {item.LastName}
+          </option>
+        ))}
+      </select>
       {/* select shoe brand from available brands */}
       <select
         value={selectedBrand}
@@ -314,7 +392,7 @@ function CreateOrder() {
       {/* button to create order */}
       <button
         onClick={fetchData}
-        disabled={!isFieldsFilled} // Disable the button when required fields are empty
+        disabled={!isFieldsFilled || selectedCustomer==="" || selectedColor==="" || selectedGender==="" || selectedSize==="" || selectedWidth==="" || selectedColor===""} // Disable the button when required fields are empty
         >
         Create Order
       </button>
