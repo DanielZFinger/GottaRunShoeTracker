@@ -53,6 +53,11 @@ function ShoeCreation() {
       autoClose: 5000, // Notification will automatically close after 5 seconds
     });
   };
+  
+  const handleRefreshPage = () => {
+    // Reload the entire page
+    window.location.reload();
+  };
 
     // fetch function that is called when user inputs a new brand name in the provided field. This function calls the backend and creates a new brand
     const createBrand = async () => {
@@ -199,12 +204,18 @@ function ShoeCreation() {
           <Box className="typography-text">
           <h1>Model And Color Creation</h1>  
           <Typography>To Create A Model Or Color Simply Select A Brand To Be Applied, Type The Name Of Your Color or Model and Click "Create"</Typography>
-          <Button sx={{fontSize: "50%"}}>Recently Created Brand Not Showing Up? Click Here To Refresh.</Button>
+          <Button
+            className="button-text"
+            style={{ fontSize: "50%" }}
+            onClick={handleRefreshPage}
+          >
+            Recently Created Brand Not Showing Up? Click Here To Refresh.
+          </Button>
           </Box>
           {/* select shoe brand from available brands */}
             <TextField sx={{m:"2%"}}
                 value={selectedBrand}
-                onChange={(e) => setSelectedBrand(e.target.value)} select label="Choose A Brand For This Model To Be Applied"
+                onChange={(e) => setSelectedBrand(e.target.value)} select label="Choose A Brand For This Model/Color To Be Applied"
                 >
                 <MenuItem value="">Select a Brand</MenuItem>
                 {brands.map((item, index) => (

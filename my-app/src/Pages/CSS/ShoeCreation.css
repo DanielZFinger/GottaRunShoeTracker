@@ -13,8 +13,15 @@
     display: flex;
     gap: 20px; /* Adjust the gap as needed */
     align-items: center; /* Vertically align items */
+    justify-content: center;
   }
 
   .typography-text{
     margin: 2%;
+  }
+
+  .button-text{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
   }
