@@ -12,12 +12,13 @@ function CreateOrder() {
     const [selectedModel, setSelectedModel] = useState('');//chosen model on the dropdown bar on the screen for user
     const [selectedSize, setSelectedSize] = useState('');
     const [selectedWidth, setSelectedWidth] = useState('');
-    const [selectedColor, setSelectedColor] = useState('');
-    const selectedStatus = useState('Shipping');
-    const [selectedOrderedDate, setSelectedOrderedDate] = useState('');
-    const [selectedCompletedDate, setSelectedCompletedDate] = useState('');
+    const [selectedColor, setSelectedColor] = useState('red');
+    const [selectedStatus, setSelectedState] = useState('Shipping');
+    const [selectedOrderedDate, setSelectedOrderedDate] = useState(new Date());
+    const [selectedCompletedDate, setSelectedCompletedDate] = useState('Incomplete');
     const [selectedGender, setSelectedGender] = useState('');
     const [employeeIDValue, setEmployeeIDValue] = useState('');
+    const [customerIDValue, setCustomerIDValue] = useState('');
     const [brands, setBrands]=useState(['']);//brands available pulled from the fetch function
     const [models, setModels]=useState(['']);//models available pulled from the fetch function
     const [isFieldsFilled, setIsFieldsFilled] = useState(false);//checks to make sure all fields for the create order button are filled. So makes sure employeeID, brand and model all have values  
@@ -228,8 +229,9 @@ function CreateOrder() {
             ))}
         </select>
         {/* select size */}
+        {/* select size */}
         <label>Select Size:</label>
-        <select value={selectedSize} onChange={setSelectedSize}>
+        <select value={selectedSize} onChange={(e) => setSelectedSize(e.target.value)}>
           <option value="">-- Select a Size --</option>
           {sizes.map((size) => (
             <option key={size} value={size}>
@@ -237,10 +239,10 @@ function CreateOrder() {
             </option>
           ))}
         </select>
-        {selectedSize && <p>You selected size: {selectedSize}</p>}
+
         {/* select width */}
         <label>Select Width:</label>
-        <select value={selectedSize} onChange={setSelectedWidth}>
+        <select value={selectedWidth} onChange={(e) => setSelectedWidth(e.target.value)}>
           <option value="">-- Select a Width --</option>
           {width.map((width) => (
             <option key={width} value={width}>
@@ -248,10 +250,9 @@ function CreateOrder() {
             </option>
           ))}
         </select>
-        {selectedSize && <p>You selected size: {selectedSize}</p>}
         {/* select gender */}
         <label>Select Gender:</label>
-        <select value={selectedSize} onChange={setSelectedGender}>
+        <select value={selectedGender} onChange={(e) => setSelectedGender(e.target.value)}>
           <option value="">-- Select a Gender --</option>
           {genders.map((gender) => (
             <option key={gender} value={gender}>
@@ -259,7 +260,6 @@ function CreateOrder() {
             </option>
           ))}
         </select>
-        {selectedSize && <p>You selected size: {selectedSize}</p>}
       {/* button to create order */}
       <button
         onClick={fetchData}
