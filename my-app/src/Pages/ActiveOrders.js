@@ -1,30 +1,55 @@
 import React, { useEffect, useState } from 'react';
-import { Auth } from 'aws-amplify';
 import { useHistory } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { getUsernameFromToken } from '../AuthUtils';
 import './CSS/ActiveOrders.css';
+import EditOrder from './EditOrder';
 //MUI
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
-import {Select, MenuItem} from "@mui/material";
-import Typography from '@mui/material/Typography';
+import { DataGrid } from '@mui/x-data-grid';
+import { Typography } from '@mui/material';
+import Button from '@mui/material/Button';
 
-function ActiveOrders(){
-    const [retrievedData, setRetrievedData] = useState(null); // State for retrieved data
-    const navigate = useNavigate(); // Use useNavigate
-      
-    const columnsOne = [
-      { field: 'OrderID', headerName: 'Order ID', flex: 1 },
-      { field: 'Brand', headerName: 'Brand', flex: 1 },
-      { field: 'Status', headerName: 'Status', flex: 1,},      
-      { field: 'Model', headerName: 'Model', flex: 1 },
-      { field: 'CustomerID', headerName: 'Customer ID', flex: 1 },
-      { field: 'OrderedDate', headerName: 'Ordered Date', flex: 1},
-      { field: 'Name', headerName: 'Name', flex: 1},
-      { field: 'Email', headerName: 'Email', flex: 1},
-    ];
+function ActiveOrders() {
+  const [retrievedData, setRetrievedData] = useState(null); // State for retrieved data
+  const [selectedRow, setSelectedRow] = useState(null); // State to track the selected row
+  const [showEditPage, setShowEditPage] = useState(false); // State to control rendering of EditOrder
 
-    const getRowId = (row) => row.OrderID; // Specify the unique id for each row
+  const handleToggleButtonClick = () => {
+    // Toggle the value of showEditPage
+    setShowEditPage(!showEditPage);
+  };
+  const navigate = useNavigate();
+
+  const columnsOne = [
+    { field: 'OrderID', headerName: 'Order ID', flex: 1 },
+    { field: 'Name', headerName: 'Name', flex: 1 },
+    { field: 'Email', headerName: 'Email', flex: 1 },
+    { field: 'Brand', headerName: 'Brand', flex: 1 },
+    { field: 'Model', headerName: 'Model', flex: 1 },
+    { field: 'Status', headerName: 'Status', flex: 1 },
+    { field: 'OrderedDate', headerName: 'Ordered Date', flex: 1 },
+    {
+      field: 'Edit',
+      headerName: 'Edit',
+      flex: 1,
+      renderCell: (params) => {
+
+        return (
+          <button onClick={handleEditClick}>Edit</button>
+        );
+      },
+    },
+  ];
+
+  const handleEditClick = (params) => {
+    // Set the selected row and show the EditOrder component
+    setSelectedRow(params.row);
+    setShowEditPage(true);
+  };
+
+  const getRowId = (row) => row.OrderID;
+
+
 
       const UpdateStatusFetch = async (orderId, updatedStatus) => {
         try {
@@ -95,40 +120,40 @@ function ActiveOrders(){
       }, []);
         
 
-    return(
-      <div>
-      <h1>Active Orders</h1>
-      <Typography
+      return (
+        <div>
+      {showEditPage && (
+        <Button variant="contained" onClick={handleToggleButtonClick}>
+          Back to Active Orders
+        </Button>
+      )}
+
+      {showEditPage ? (
+        <EditOrder rowData={selectedRow} />
+      ) : (
+        <>
+          <h1>Active Orders</h1>
+          <Typography
             className="typography-text2"
-            style={{ fontSize: "60%" }}
+            style={{ fontSize: '60%' }}
           >
             When Updating Values The Browser Will Refresh
           </Typography>
-      {/* Display retrieved data */}
-      {retrievedData && (
-        <div style={{ height: 400, width: '100%' }}>
-          <DataGrid
-            rows={retrievedData}
-            columns={columnsOne.map((column) => ({
-                ...column,
-                renderCell: (params) => {
-                return (
-                    <div
-                    title={params.value} // Set the title attribute to the cell value
-                    style={{ cursor: 'pointer' }}
-                    >
-                    {params.value}
-                    </div>
-                );
-                },
-            }))}
-            pageSize={5}
-            getRowId={getRowId} // Set the custom getRowId function here
-            />
-
-        </div>
+          {retrievedData && (
+            <div style={{ height: 400, width: '100%' }}>
+              <DataGrid
+                rows={retrievedData}
+                columns={columnsOne}
+                pageSize={5}
+                getRowId={getRowId}
+                onCellClick={handleEditClick}
+              />
+            </div>
+          )}
+        </>
       )}
     </div>
-    );
-}
-export default ActiveOrders;
+
+      );
+    }
+    export default ActiveOrders;

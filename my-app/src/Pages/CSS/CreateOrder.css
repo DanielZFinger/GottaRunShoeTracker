@@ -7,3 +7,12 @@
     margin: 2%;
     min-height: 100vh;
 }
+
+.editOrder{
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+    padding: 2%;
+    margin: 2%;
+}
