@@ -33,6 +33,8 @@ function CreateOrder() {
     const [models, setModels]=useState(['']);//models available pulled from the fetch function
     const [colors, setColors]=useState(['']);//colors avaliable pulled from fetch function
     const [customers, setCustomers]=useState(['']);//customers available pulled from fetch fuction
+    const [selectedName, setSelectedName] = useState (['']);
+    const [selectedEmail, setSelectedEmail] = useState (['']);
     const [isFieldsFilled, setIsFieldsFilled] = useState(false);//checks to make sure all fields for the create order button are filled. So makes sure employeeID, brand and model all have values  
     const navigate = useNavigate();
     // default sizes,width and gender of shoes
@@ -211,6 +213,8 @@ function CreateOrder() {
         Gender: selectedGender,
         EmployeeID: employeeIDValue,
         CustomerID: selectedCustomer,
+        Name: selectedName,
+        Email: selectedEmail,
       };
 
       const accessToken = session.getAccessToken().getJwtToken();
@@ -321,6 +325,22 @@ function CreateOrder() {
     setSelectedColor("");
   }
 
+  // set customer in order
+  const handleSelectedCustomer = async (targetCustomerID) => {
+    const targetCustomer = filteredCustomers.find(customer => customer.UserID === targetCustomerID);
+    setSelectedCustomer(targetCustomerID);
+    const userID = targetCustomer.UserID;
+    const firstName = targetCustomer.FirstName;
+    const lastName = targetCustomer.LastName;
+    const email = targetCustomer.Email;
+
+    console.log('Customer ID:', userID);
+    console.log('First Name:', firstName);
+    console.log('Last Name:', lastName);
+    console.log('Email:', email);
+    setSelectedName(firstName+" "+lastName);
+    setSelectedEmail(email);
+  }
   return (
     <div className="body">
         <h1>Create an Order</h1>
@@ -338,7 +358,7 @@ function CreateOrder() {
       {/* Select a customer from available customers */}
       <TextField
         value={selectedCustomer}
-        onChange={(e) => setSelectedCustomer(e.target.value)} select label="Customer"
+        onChange={(e) => handleSelectedCustomer(e.target.value)} select label="Customer"
       >
         <MenuItem value="">Select a Customer</MenuItem>
         {filteredCustomers.map((item, index) => (
