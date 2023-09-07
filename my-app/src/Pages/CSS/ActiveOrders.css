@@ -1,0 +1,36 @@
+/* Add this CSS in your component's stylesheet or a global stylesheet */
+.custom-status-editor {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    height: 100%;
+    box-sizing: border-box;
+  }
+  
+  .custom-status-editor select {
+    border: none;
+    width: 100%;
+    font-size: inherit;
+    padding: 0;
+    appearance: none;
+    background-color: transparent;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  /* Style the dropdown arrow as you like */
+  .custom-status-editor select::-ms-expand {
+    display: none;
+  }
+  
+  .custom-status-editor select::-webkit-select-arrow {
+    appearance: none;
+    background-color: transparent;
+  }
+  
+  .typography-text2{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: teal;
+  }
