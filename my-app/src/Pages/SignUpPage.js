@@ -8,6 +8,8 @@ function SignUpPage() {
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [isValidPassword, setIsValidPassword] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
 
   // page navigation once a valid account is created. This will send us to the confirmation page
   const navigate = useNavigate();
@@ -16,6 +18,7 @@ function SignUpPage() {
     try {
       const user = await Auth.signUp(email, password);
       console.log('User signed up:', user);
+      createUser(user.userSub);
       navigate('/confirmation');
     } catch (error) {
       console.error('Sign Up error:', error);
@@ -37,6 +40,16 @@ function SignUpPage() {
     return passwordPattern.test(password);
   };
 
+  const handleFirstName = (e) => {
+    const newFirst = e.target.value;
+    setFirstName(newFirst);
+  };
+
+  const handleLastName = (e) => {
+    const newLast = e.target.value;
+    setLastName(newLast);
+  };
+
   const handleEmailChange = (e) => {
     const newEmail = e.target.value;
     setEmail(newEmail);
@@ -49,9 +62,58 @@ function SignUpPage() {
     setIsValidPassword(validatePassword(newPassword));
   };
 
+  // create user
+  const createUser = async (userID) => {
+    try {
+      const retrievePayload = {
+        operation: 'createUser',
+        UserID: userID,
+        Email: email,
+        FirstName: firstName,
+        LastName: lastName,
+        UserLevel: "Customer",
+      };
+      console.log(retrievePayload);
+
+      const response = await fetch(
+        'https://h4lh1cdrq6.execute-api.us-east-1.amazonaws.com/Dev/userdata',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(retrievePayload),
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+      } else {
+        console.error('Error fetching retrieved data:', response.statusText);
+      }
+
+    } catch (error) {
+      console.error('Error fetching retrieved data:', error);
+    }
+  };
+  
+
   return (
     <div>
       <h2>Sign Up</h2>
+      <input
+        type="text"
+        placeholder="First Name"
+        value={firstName}
+        onChange={handleFirstName}
+      />
+      <input
+        type="text"
+        placeholder="Last Name"
+        value={lastName}
+        onChange={handleLastName}
+      />
       <input
         type="text"
         placeholder="Email"
