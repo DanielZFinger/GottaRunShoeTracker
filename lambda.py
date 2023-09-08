@@ -152,6 +152,53 @@ def lambda_handler(event, context):
             "body": json.dumps(mResponse)
             }
             return response
+    elif operation == 'retrieveAllCustomers':
+        try:
+            # response = table.get_item(Key={'CustomerID': customer_id})
+            # order = response.get('Item')
+            response = userTable.scan(
+            )
+            
+            models = response.get('Items', [])
+            if models:
+                mResponse = "Customer info succesfully retrieved!"
+                response = {
+                    "statusCode": 200,
+                    "headers": {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json",
+                        "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                    },
+                "body": json.dumps(models)
+                }
+                return response
+            else:
+                mResponse = "Customer info failed to retrieve!"
+                response = {
+                    "statusCode": 403,
+                    "headers": {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json",
+                        "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                    },
+                "body": json.dumps(mResponse)
+                }
+                return response
+        except Exception as e:
+            mResponse = "User info couldn't be reached!"
+            response = {
+                "statusCode": 402,
+                "headers": {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                },
+            "body": json.dumps(mResponse)
+            }
+            return response
     
     # *****|All Model Functions|*****
     if operation == 'createModel':
@@ -330,16 +377,47 @@ def lambda_handler(event, context):
     # *****|All Order Functions|*****
         
     # update a specific orders contents based on its orderID
-    if operation == 'update':
-        employee_id = body['EmployeeID']
+    if operation == 'updateOrder':
+        OrderID = body['orderID']
+        brand = body['brand']
+        model = body['model']
+        color = body['color']
+        size = body['size']
+        width = body['width']
+        gender = body['gender']
+        status = body['status']
+        completedDate= body['completedDate']
         
         try:
-            messageResponse = table.update_item(
-                Key={'OrderID': order_id, 'EmployeeID': employee_id},
-                UpdateExpression='SET CustomerID = :cid',
-                ExpressionAttributeValues={':cid': customer_id}
+            # Update the item in DynamoDB
+            response = table.update_item(
+                Key={'OrderID': OrderID},
+                UpdateExpression='SET #brandAttr = :brandValue, #modelAttr = :modelValue, #colorAttr = :colorValue, '
+                                 '#sizeAttr = :sizeValue, #widthAttr = :widthValue, #genderAttr = :genderValue, '
+                                 '#statusAttr = :statusValue, #completedDateAttr = :completedDateValue',
+                ExpressionAttributeNames={
+                    '#brandAttr': 'Brand',
+                    '#modelAttr': 'Model',
+                    '#colorAttr': 'Color',
+                    '#sizeAttr': 'Size',
+                    '#widthAttr': 'Width',
+                    '#genderAttr': 'Gender',
+                    '#statusAttr': 'Status',
+                    '#completedDateAttr': 'CompletedDate'
+                },
+                ExpressionAttributeValues={
+                    ':brandValue': brand,
+                    ':modelValue': model,
+                    ':colorValue': color,
+                    ':sizeValue': size,
+                    ':widthValue': width,
+                    ':genderValue': gender,
+                    ':statusValue': status,
+                    ':completedDateValue': completedDate
+                }
             )
-            mResponse = "Order updated succesfully!"
+    
+            mResponse = "Order updated successfully!"
             response = {
                 "statusCode": 200,
                 "headers": {
@@ -348,22 +426,103 @@ def lambda_handler(event, context):
                     "Content-Type": "application/json",
                     "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
                 },
-            "body": json.dumps(mResponse)
-    }
+                "body": json.dumps(mResponse)
+            }
             return response
+    
         except Exception as e:
             mResponse = "Order failed to update!"
             response = {
-                "statusCode": 400,
+                "statusCode": 406,
                 "headers": {
                     "Access-Control-Allow-Origin": "*",
                     "Access-Control-Allow-Headers": "*",
                     "Content-Type": "application/json",
                     "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
                 },
-            "body": json.dumps(mResponse)
+                "body": json.dumps(mResponse)
             }
             return response
+    
+    elif operation == 'updateOrderStatus':
+        OrderID = body['OrderID']
+        status = body['status']
+        
+        try:
+            # Update the 'Status' attribute using the UpdateExpression
+            messageResponse = table.update_item(
+                Key={'OrderID': OrderID},
+                UpdateExpression='SET #statusAttr = :newStatus',
+                ExpressionAttributeNames={'#statusAttr': 'Status'},
+                ExpressionAttributeValues={':newStatus': status}
+            )
+            mResponse = "Order updated successfully!"
+            response = {
+                "statusCode": 200,
+                "headers": {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                },
+                "body": json.dumps(mResponse)
+            }
+            return response
+        except Exception as e:
+            mResponse = "Order failed to update!"
+            response = {
+                "statusCode": 409,
+                "headers": {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                },
+                "body": json.dumps(mResponse)
+            }
+            return response
+
+    elif operation == 'updateOrderStatusComplete':
+        OrderID = body['OrderID']
+        status = body['status']
+        CompletedDate = body['CompletedDate']
+        
+        try:
+            # Update the 'Status' and 'CompletedDate'
+            messageResponse = table.update_item(
+                Key={'OrderID': OrderID},
+                UpdateExpression='SET #statusAttr = :newStatus, CompletedDate = :newCompletedDate',
+                ExpressionAttributeNames={'#statusAttr': 'Status'},
+                ExpressionAttributeValues={':newStatus': status, ':newCompletedDate': CompletedDate}
+            )
+            mResponse = "Order updated successfully!"
+            response = {
+                "statusCode": 200,
+                "headers": {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                },
+                "body": json.dumps(mResponse)
+            }
+            return response
+        except Exception as e:
+            mResponse = "Order failed to update!"
+            response = {
+                "statusCode": 409,
+                "headers": {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                },
+                "body": json.dumps(mResponse)
+            }
+            return response
+
+
+
     
     # create an order
     elif operation == 'create':
@@ -380,6 +539,8 @@ def lambda_handler(event, context):
         orderedDate = body['OrderedDate']
         completedDate = body['CompletedDate']
         gender = body['Gender']
+        name = body['Name']
+        email = body['Email']
         
         # Create a new order in the table
         try:
@@ -397,9 +558,11 @@ def lambda_handler(event, context):
                     'Width': width,
                     'Color': color,
                     'Status': status,
-                    'Ordered Date': orderedDate,
-                    'Completed Date': completedDate,
-                    'Gender': gender
+                    'OrderedDate': orderedDate,
+                    'CompletedDate': completedDate,
+                    'Gender': gender,
+                    'Name': name,
+                    'Email': email
                 }
             )
             mResponse = "Succesfully created order!"
@@ -531,7 +694,58 @@ def lambda_handler(event, context):
                 },
             "body": json.dumps(mResponse)
             }
-            return response        
+            return response   
+    
+    elif operation == 'retrieveActiveOrders':
+        completedDate = body['completedDate']
+        try:
+            # Initial scan
+            response = table.scan(FilterExpression='CompletedDate = :cid',
+                ExpressionAttributeValues={':cid': completedDate}
+                )
+            items = response.get('Items',[])
+    
+            print(items)
+            if items:
+                mResponse = "Orders successfully retrieved!"
+                response = {
+                    "statusCode": 200,
+                    "headers": {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json",
+                        "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                    },
+                    "body": json.dumps(items)
+                }
+                return response
+            else:
+                mResponse = "Order failed to retrieve!"
+                response = {
+                    "statusCode": 411,
+                    "headers": {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "application/json",
+                        "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                    },
+                "body": json.dumps(mResponse)
+                }
+                return response 
+        except Exception as e:
+            mResponse = "Order failed to retrieve!"
+            response = {
+                "statusCode": 412,
+                "headers": {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                },
+            "body": json.dumps(mResponse)
+            }
+            return response   
+    
     else:
         mResponse = "Invalid operation!"
         response = {
