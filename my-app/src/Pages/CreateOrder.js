@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { getUsernameFromToken } from '../AuthUtils';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for styling
+import 'react-toastify/dist/ReactToastify.css';
 // MUI styling below
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -24,7 +24,7 @@ function CreateOrder() {
     const [selectedColor, setSelectedColor] = useState('');//chosen color from dropdown
     const [selectedStatus, setSelectedState] = useState('Shipping');//status of the shipping. All are default set to shipping when order is placed
     const [selectedOrderedDate, setSelectedOrderedDate] = useState(new Date());//date of the order when placed
-    const [selectedCompletedDate, setSelectedCompletedDate] = useState('Incomplete');//date when order is completed--Not completed when order is placed
+    const [selectedCompletedDate, setSelectedCompletedDate] = useState('0000-00-00-TBD');//date when order is completed--Not completed when order is placed
     const [selectedGender, setSelectedGender] = useState('');//chosen shoe gender from dropdown
     const [employeeIDValue, setEmployeeIDValue] = useState('');//employees ID so we can track who placed the order
     const [customerIDValue, setCustomerIDValue] = useState('');//customer ID so we can track who we ordered for

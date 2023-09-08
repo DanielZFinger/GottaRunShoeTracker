@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { getUsernameFromToken } from '../AuthUtils';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // MUI styling below
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
@@ -46,6 +48,16 @@ function EditOrder(props){
     const [selectedCompletedDate, setSelectedCompletedDate] = useState(rowData.CompletedDate);
     const [selectedGender, setSelectedGender] = useState(rowData.Gender);//chosen shoe gender from dropdown
     
+
+    // toastify success notification
+    const handleUpdateOrder = () => { 
+      // Show a success notification
+      toast.success('Order Updated', {
+        position: 'top-right',
+        autoClose: 5000, // Notification will automatically close after 5 seconds
+      });
+    };
+
     const fetchColors = async () => {
         try {
             const colorPayload = {
@@ -160,32 +172,42 @@ function EditOrder(props){
         console.log(selectedGender);
         console.log(selectedStatus);
         console.log(compDate);
-        // try {
-        //     console.log("in the updatefeth");
-        //     const retrievePayload = {
-        //       operation: 'updateOrder',
-        //     };
+        console.log(rowData.OrderID);
+        try {
+            console.log("in the updatefeth");
+            const retrievePayload = {
+              operation: 'updateOrder',
+              orderID: rowData.OrderID,
+              brand: selectedBrand,
+              model: selectedModel,
+              color: selectedColor,
+              size: selectedSize,
+              width: selectedWidth,
+              gender: selectedGender,
+              status: selectedStatus,
+              completedDate: compDate
+            };
       
-        //     const response = await fetch(
-        //       'https://h4lh1cdrq6.execute-api.us-east-1.amazonaws.com/Dev/userdata',
-        //       {
-        //         method: 'POST',
-        //         headers: {
-        //           'Content-Type': 'application/json',
-        //         },
-        //         body: JSON.stringify(retrievePayload),
-        //       }
-        //     );
+            const response = await fetch(
+              'https://h4lh1cdrq6.execute-api.us-east-1.amazonaws.com/Dev/userdata',
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(retrievePayload),
+              }
+            );
       
-        //     if (response.ok) {
-        //       const data = await response.json();
-        //     } else {
-        //       console.error('Error fetching retrieved data:', response.statusText);
-        //     }
+            if (response.ok) {
+              const data = await response.json();
+            } else {
+              console.error('Error fetching retrieved data:', response.statusText);
+            }
       
-        //   } catch (error) {
-        //     console.error('Error fetching retrieved data:', error);
-        //   }
+          } catch (error) {
+            console.error('Error fetching retrieved data:', error);
+          }
       };
 
     return(
@@ -279,12 +301,13 @@ function EditOrder(props){
 
 
 
-            <Button variant="contained" disabled={!isFieldsFilled || selectedColor===""} onClick={() => {   
+            <Button variant="contained" disabled={!isFieldsFilled || selectedColor===""} onClick={() => { 
+              handleUpdateOrder();  
             if(selectedStatus==="Complete"){
                 updateOrderFetch(new Date());
             }
             else{
-                updateOrderFetch("Incomplete");
+                updateOrderFetch("0000-00-00-TBD");
             }
             }}>Update Changes</Button>  
             

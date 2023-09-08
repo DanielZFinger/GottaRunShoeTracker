@@ -87,7 +87,7 @@ function ActiveOrders() {
         try {
           const retrievePayload = {
             operation: 'retrieveActiveOrders',
-            completedDate: "Incomplete",
+            completedDate: "0000-00-00-TBD",
           };
     
           const response = await fetch(
@@ -133,12 +133,13 @@ function ActiveOrders() {
       ) : (
         <>
           <h1>Active Orders</h1>
-          <Typography
+          <Button
             className="typography-text2"
             style={{ fontSize: '60%' }}
+            onClick={()=>{window.location.reload()}}
           >
-            When Updating Values The Browser Will Refresh
-          </Typography>
+            When Editing Orders Click Here to Load The Changes
+          </Button>
           {retrievedData && (
             <div style={{ height: 400, width: '100%' }}>
               <DataGrid
