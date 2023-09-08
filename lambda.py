@@ -102,7 +102,51 @@ def lambda_handler(event, context):
             return response
     
     # *****|All User Functions|*****  
-    if operation == 'retrieveUserInfo':
+    if operation == 'createUser':
+        UserID = body['UserID']
+        Email = body['Email']
+        FirstName = body['FirstName']
+        LastName = body['LastName']
+        UserLevel = body['UserLevel']
+
+        try:
+            # Create a new user item in the DynamoDB table
+            userTable.put_item(
+                Item={
+                    'UserID': UserID,
+                    'Email': Email,
+                    'FirstName': FirstName,
+                    'LastName': LastName,
+                    'UserLevel': UserLevel
+                }
+            )
+    
+            mResponse = "User created successfully!"
+            return {
+                "statusCode": 200,
+                "headers": {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                },
+                "body": json.dumps({"message": mResponse})
+            }
+
+        except Exception as e:
+            mResponse = "Error creating user: " + str(e)
+            return {
+                "statusCode": 500,
+                "headers": {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                },
+                "body": json.dumps({"message": mResponse})
+            }
+                
+    elif operation == 'retrieveUserInfo':
         userID = body['UserID']
         try:
             # response = table.get_item(Key={'CustomerID': customer_id})
