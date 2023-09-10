@@ -12,6 +12,7 @@ import OrderReports from './Pages/OrderReports';
 import ShoeCreation from './Pages/ShoeCreation';
 import ActiveOrders from './Pages/ActiveOrders';
 import EditOrder from './Pages/EditOrder';
+import NewCustomer from './Pages/NewCustomer';
 
 function App() {
   const navigateToSignUp = () => {
@@ -33,6 +34,7 @@ function App() {
           <Route path ="/shoe-creation" element={<ShoeCreation/>}/>
           <Route path ="/active-orders" element={<ActiveOrders/>}/>
           <Route path ="/edit-order" element={<EditOrder/>}/>
+          <Route path="/new-customer" element={<NewCustomer/>}/>
         </Routes>
       </div>
     </HashRouter>

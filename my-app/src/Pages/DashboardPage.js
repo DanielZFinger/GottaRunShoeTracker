@@ -11,6 +11,7 @@ import ShoeCreation from './ShoeCreation';
 import CreateOrder from './CreateOrder';
 import MyOrders from './MyOrder';
 import ActiveOrders from './ActiveOrders';
+import NewCustomer from './NewCustomer';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -37,6 +38,7 @@ function Dashboard() {
   const [showCreateOrderPage, setCreateOrderPage] = useState(false);
   const [showMyOrdersPage, setMyOrdersPage] = useState(false);
   const [showActiveOrdersPage, setActiveOrdersPage] = useState(false);
+  const [showNewCustomerPage, setNewCustomerPage] = useState(false);
 
   const handleMyOrdersPage = () => {
     setMyOrdersPage(true);
@@ -70,6 +72,12 @@ function Dashboard() {
   }
   const handleShowActiveOrdersPageOff = ()=> {
     setActiveOrdersPage(false);
+  }
+  const handleShowNewCustomerPage = ()=> {
+    setNewCustomerPage(true);
+  }
+  const handleShowNewCustomerPageOff = ()=> {
+    setNewCustomerPage(false);
   }
 
 
@@ -156,6 +164,7 @@ function Dashboard() {
           { text: 'Shoe Creation', requiredLevel: 'Employee'},
           { text: 'Active Orders', requiredLevel: 'Employee'},
           { text: 'Order Reports', requiredLevel: 'Employee'},
+          { text: 'Create Customer', requiredLevel: 'Employee'},
           { text: 'My Orders'},
           { text: 'Settings'},
         ].map((item, index) => (
@@ -169,6 +178,7 @@ function Dashboard() {
                   handleCreateOrderPageOff();
                   handleMyOrdersPageOff();
                   handleShowActiveOrdersPageOff();
+                  handleShowNewCustomerPageOff();
                 }
                 else if (item.text === 'Shoe Creation') {
                   handleCreateShoePage();
@@ -176,6 +186,7 @@ function Dashboard() {
                   handleCreateOrderPageOff();
                   handleMyOrdersPageOff();
                   handleShowActiveOrdersPageOff();
+                  handleShowNewCustomerPageOff();
                 }
                 else if (item.text === 'Create Order') {
                   handleCreateOrderPage();
@@ -183,7 +194,7 @@ function Dashboard() {
                   handleCreateShoePageOff();
                   handleMyOrdersPageOff();
                   handleShowActiveOrdersPageOff();
-
+                  handleShowNewCustomerPageOff();
                 }
                 else if (item.text === 'My Orders') {
                   handleCreateOrderPageOff();
@@ -191,6 +202,7 @@ function Dashboard() {
                   handleCreateShoePageOff();
                   handleMyOrdersPage();
                   handleShowActiveOrdersPageOff();
+                  handleShowNewCustomerPageOff();
                 }
                 else if (item.text === 'Active Orders') {
                   handleCreateOrderPageOff();
@@ -198,6 +210,15 @@ function Dashboard() {
                   handleCreateShoePageOff();
                   handleMyOrdersPageOff();
                   handleShowActiveOrdersPage();
+                  handleShowNewCustomerPageOff();
+                }
+                else if (item.text === 'Create Customer') {
+                  handleCreateOrderPageOff();
+                  handleShowOrderPageOff();
+                  handleCreateShoePageOff();
+                  handleMyOrdersPageOff();
+                  handleShowActiveOrdersPageOff();
+                  handleShowNewCustomerPage();
                 }
               }}>
               <ListItemIcon>
@@ -226,6 +247,7 @@ function Dashboard() {
       {showCreateShoePage && userLevel === 'Employee' && <ShoeCreation />}
       {showCreateOrderPage && userLevel === 'Employee' && <CreateOrder />}
       {showActiveOrdersPage && userLevel === 'Employee' && <ActiveOrders/>}
+      {showNewCustomerPage && userLevel === 'Employee' && <NewCustomer/>}
       {showMyOrdersPage && <MyOrders/>}
         
       </Box>
