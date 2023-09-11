@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { useHistory } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+// MUI styling below
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import {Select, MenuItem} from "@mui/material";
+import TextField from '@mui/material/TextField';
 
 function AuthForm({navigateToSignUp}) {
   const [email, setEmail] = useState('');
@@ -28,21 +33,22 @@ function AuthForm({navigateToSignUp}) {
   };
 
   return (
-    <div>
-      <input
+    <div className="body">
+      <h1>Welcome to GottaRun Order Tracker</h1>
+      <TextField sx={{p:2}}
         type="text"
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
-      <input
+      <TextField sx={{p:2}}
         type="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button onClick={handleSignUp}>Sign Up</button>
-      <button onClick={handleSignIn}>Sign In</button>
+      <Button sx={{p:2, m:2}} variant="contained" onClick={handleSignUp}>Sign Up</Button>
+      <Button sx={{p:2, m:2}} variant="contained" onClick={handleSignIn}>Sign In</Button>
       {errorMessage && <div className="error">{errorMessage}</div>}
     </div>
   );

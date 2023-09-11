@@ -31,6 +31,7 @@ const drawerWidth = 240;
 function Dashboard() {
   const [userData, setUserData] = useState(null);
   const [username, setUsername] = useState('');//usernameID once we get it from etch function
+  const [userFirstName, setUserFirstName] = useState('');//usernameID once we get it from etch function
   const [userLevel, setUserLevel]=useState(['']);
   const navigate = useNavigate(); // Use useNavigate
   const [showOrderPage, setShowOrderPage] = useState(false);
@@ -112,7 +113,9 @@ function Dashboard() {
         const data = await response.json();
         console.log(data); // Make sure the data is received correctly
         const dataArr = data[0];
-        console.log(dataArr.UserID);
+        console.log(dataArr.FirstName);
+        setUserFirstName(dataArr.FirstName);
+        
         setUserLevel(dataArr.UserLevel);
 
       } else {
@@ -140,7 +143,7 @@ function Dashboard() {
       >
         <Toolbar>
           <Typography variant="h6" noWrap component="div">
-            Welcome, {username}
+            Welcome, {userFirstName}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -249,6 +252,7 @@ function Dashboard() {
       {showActiveOrdersPage && userLevel === 'Employee' && <ActiveOrders/>}
       {showNewCustomerPage && userLevel === 'Employee' && <NewCustomer/>}
       {showMyOrdersPage && <MyOrders/>}
+      <h1>Welcome to the Dashboard</h1>
         
       </Box>
     </Box>

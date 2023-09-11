@@ -3,6 +3,11 @@ import { Auth } from 'aws-amplify';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+// MUI styling below
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import {Select, MenuItem} from "@mui/material";
+import TextField from '@mui/material/TextField';
 
 function NewCustomer() {
   const [email, setEmail] = useState('');
@@ -106,28 +111,28 @@ function NewCustomer() {
   
 
   return (
-    <div>
+    <div className="body">
       <h2>Create New Customer</h2>
-      <input
+      <TextField
         type="text"
         placeholder="First Name"
         value={firstName}
         onChange={handleFirstName}
       />
-      <input
+      <TextField
         type="text"
         placeholder="Last Name"
         value={lastName}
         onChange={handleLastName}
       />
-      <input
+      <TextField
         type="text"
         placeholder="Email"
         value={email}
         onChange={handleEmailChange}
       />
       {!isValidEmail && <div className="error">Please enter a valid email address.</div>}
-      <input
+      <TextField
         type="password"
         placeholder="Password"
         value={password}
@@ -138,9 +143,9 @@ function NewCustomer() {
           Password must have at least 8 characters, one number, and one capital letter.
         </div>
       )}
-      <button onClick={handleSignUp} disabled={!isValidEmail || !isValidPassword}>
-        Sign Up
-      </button>
+      <Button  variant="contained" onClick={handleSignUp} disabled={!isValidEmail || !isValidPassword}>
+        Sign Customer Up
+      </Button>
       {errorMessage && <div className="error">{errorMessage}</div>}
     </div>
   );
