@@ -10,8 +10,8 @@ import TextField from '@mui/material/TextField';
 function SignUpPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isValidEmail, setIsValidEmail] = useState(true);
-  const [isValidPassword, setIsValidPassword] = useState(true);
+  const [isValidEmail, setIsValidEmail] = useState(false);
+  const [isValidPassword, setIsValidPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -103,7 +103,6 @@ function SignUpPage() {
     }
   };
   
-
   return (
     <div className="body">
       <h2>Sign Up</h2>
@@ -137,7 +136,7 @@ function SignUpPage() {
           Password must have at least 8 characters, one number, and one capital letter.
         </div>
       )}
-      <Button  variant="contained" onClick={handleSignUp} disabled={!isValidEmail || !isValidPassword}>
+      <Button variant="contained" onClick={handleSignUp} disabled={!isValidEmail || !isValidPassword || firstName==="" || lastName===""}>
         Sign Up
       </Button>
       {errorMessage && <div className="error">{errorMessage}</div>}

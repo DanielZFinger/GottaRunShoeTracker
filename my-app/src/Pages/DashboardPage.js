@@ -12,6 +12,7 @@ import CreateOrder from './CreateOrder';
 import MyOrders from './MyOrder';
 import ActiveOrders from './ActiveOrders';
 import NewCustomer from './NewCustomer';
+import Settings from './Settings';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -37,9 +38,10 @@ function Dashboard() {
   const [showOrderPage, setShowOrderPage] = useState(false);
   const [showCreateShoePage, setCreateShoePage] = useState(false);
   const [showCreateOrderPage, setCreateOrderPage] = useState(false);
-  const [showMyOrdersPage, setMyOrdersPage] = useState(false);
+  const [showMyOrdersPage, setMyOrdersPage] = useState(true);
   const [showActiveOrdersPage, setActiveOrdersPage] = useState(false);
   const [showNewCustomerPage, setNewCustomerPage] = useState(false);
+  const [showSettingsPage, setShowSettingsPage] = useState(false);
 
   const handleMyOrdersPage = () => {
     setMyOrdersPage(true);
@@ -79,6 +81,12 @@ function Dashboard() {
   }
   const handleShowNewCustomerPageOff = ()=> {
     setNewCustomerPage(false);
+  }
+  const handleShowSettingsPage = ()=> {
+    setShowSettingsPage(true);
+  }
+  const handleShowSettingsPageOff = ()=> {
+    setShowSettingsPage(false);
   }
 
 
@@ -182,6 +190,7 @@ function Dashboard() {
                   handleMyOrdersPageOff();
                   handleShowActiveOrdersPageOff();
                   handleShowNewCustomerPageOff();
+                  handleShowSettingsPageOff();
                 }
                 else if (item.text === 'Shoe Creation') {
                   handleCreateShoePage();
@@ -190,6 +199,7 @@ function Dashboard() {
                   handleMyOrdersPageOff();
                   handleShowActiveOrdersPageOff();
                   handleShowNewCustomerPageOff();
+                  handleShowSettingsPageOff();
                 }
                 else if (item.text === 'Create Order') {
                   handleCreateOrderPage();
@@ -198,6 +208,7 @@ function Dashboard() {
                   handleMyOrdersPageOff();
                   handleShowActiveOrdersPageOff();
                   handleShowNewCustomerPageOff();
+                  handleShowSettingsPageOff();
                 }
                 else if (item.text === 'My Orders') {
                   handleCreateOrderPageOff();
@@ -206,6 +217,7 @@ function Dashboard() {
                   handleMyOrdersPage();
                   handleShowActiveOrdersPageOff();
                   handleShowNewCustomerPageOff();
+                  handleShowSettingsPageOff();
                 }
                 else if (item.text === 'Active Orders') {
                   handleCreateOrderPageOff();
@@ -214,6 +226,7 @@ function Dashboard() {
                   handleMyOrdersPageOff();
                   handleShowActiveOrdersPage();
                   handleShowNewCustomerPageOff();
+                  handleShowSettingsPageOff();
                 }
                 else if (item.text === 'Create Customer') {
                   handleCreateOrderPageOff();
@@ -222,6 +235,16 @@ function Dashboard() {
                   handleMyOrdersPageOff();
                   handleShowActiveOrdersPageOff();
                   handleShowNewCustomerPage();
+                  handleShowSettingsPageOff();
+                }
+                else if (item.text === 'Settings') {
+                  handleCreateOrderPageOff();
+                  handleShowOrderPageOff();
+                  handleCreateShoePageOff();
+                  handleMyOrdersPageOff();
+                  handleShowActiveOrdersPageOff();
+                  handleShowNewCustomerPageOff();
+                  handleShowSettingsPage();
                 }
               }}>
               <ListItemIcon>
@@ -252,7 +275,7 @@ function Dashboard() {
       {showActiveOrdersPage && userLevel === 'Employee' && <ActiveOrders/>}
       {showNewCustomerPage && userLevel === 'Employee' && <NewCustomer/>}
       {showMyOrdersPage && <MyOrders/>}
-      <h1>Welcome to the Dashboard</h1>
+      {showSettingsPage && <Settings/>}
         
       </Box>
     </Box>

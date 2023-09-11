@@ -7,6 +7,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import {Select, MenuItem} from "@mui/material";
 import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 
 function AuthForm({navigateToSignUp}) {
   const [email, setEmail] = useState('');
@@ -47,8 +48,10 @@ function AuthForm({navigateToSignUp}) {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <Button sx={{p:2, m:2}} variant="contained" onClick={handleSignUp}>Sign Up</Button>
       <Button sx={{p:2, m:2}} variant="contained" onClick={handleSignIn}>Sign In</Button>
+      <Typography className="center">Don't have an account? Create one here.</Typography>
+      <Button sx={{p:2, m:2}} variant="contained" onClick={handleSignUp}>Sign Up</Button>
+      
       {errorMessage && <div className="error">{errorMessage}</div>}
     </div>
   );
