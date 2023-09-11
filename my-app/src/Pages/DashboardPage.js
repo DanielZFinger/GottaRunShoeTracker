@@ -138,6 +138,19 @@ function Dashboard() {
   useEffect(() => {
     fetchUserData();
   }, []);
+  useEffect(() => {
+    async function checkAuthenticationStatus() {
+      try {
+        await Auth.currentSession(); // Check if there's a valid session
+      } catch (error) {
+        // No valid session, log the user out and redirect to the sign-in page
+        await Auth.signOut();
+        navigate('/signin'); // Redirect to the sign-in page
+      }
+    }
+
+    checkAuthenticationStatus();
+  }, [navigate]);
 
 
   return (

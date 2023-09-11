@@ -9,7 +9,7 @@ import {Select, MenuItem} from "@mui/material";
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-function AuthForm({navigateToSignUp}) {
+function AuthForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
@@ -18,7 +18,7 @@ function AuthForm({navigateToSignUp}) {
   const navigate = useNavigate(); // Use useNavigate
 
   const handleSignUp = () => {
-    navigateToSignUp();
+    // navigateToSignUp();
     navigate('/signup'); // Navigate to the sign-up page
   };
 

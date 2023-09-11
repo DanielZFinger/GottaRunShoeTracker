@@ -13,10 +13,19 @@ import {Select, MenuItem} from "@mui/material";
 import TextField from '@mui/material/TextField';
 
 function Settings(){
-
+    const navigate = useNavigate();
+    // logout
+    const handleLogOut = async () => {
+        await Auth.signOut();
+            navigate('/signin'); // Redirect to the sign-in page
+    }
     return(
         <div>
-            <h1>Settins page</h1>
+            <h1>Settings page</h1>
+            <Button variant="contained"
+      onClick={() => {
+        handleLogOut();
+      }}>Log Out</Button>
         </div>    
     );
 }
