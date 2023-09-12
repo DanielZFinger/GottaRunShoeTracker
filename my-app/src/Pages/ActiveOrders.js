@@ -21,9 +21,8 @@ function ActiveOrders() {
   const navigate = useNavigate();
 
   const columnsOne = [
-    { field: 'OrderID', headerName: 'Order ID', flex: 1 },
     { field: 'Name', headerName: 'Name', flex: 1 },
-    { field: 'Email', headerName: 'Email', flex: 1 },
+    { field: 'Email', headerName: 'Email/Phone', flex: 1 },
     { field: 'Brand', headerName: 'Brand', flex: 1 },
     { field: 'Model', headerName: 'Model', flex: 1 },
     { field: 'Status', headerName: 'Status', flex: 1 },
