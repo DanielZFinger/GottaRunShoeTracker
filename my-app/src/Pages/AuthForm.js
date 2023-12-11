@@ -35,6 +35,7 @@ function AuthForm() {
 
   return (
     <div className="body">
+      <p>this is the test environment. If you would like to test the site use the email "dzfinge@clemson.edu" as the username and password "Daniel123". If you want to create an account you must click the link that is sent to your email after creating an account for your account to be active(this will likely be in your junk folder. Keep in mind the account you create will not have full functions as it is the default permissions of "customer") </p>
       <h1>Welcome to GottaRun Order Tracker</h1>
       <TextField sx={{p:2}}
         type="text"
