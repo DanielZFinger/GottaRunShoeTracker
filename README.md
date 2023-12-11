@@ -7,5 +7,5 @@ create tables for shoe Brands, Models, Colors and order contents. This service w
 Run could have a better way of managing and tracking orders as opposed to sticky notes which they were using before.
 
 Ability to signup. Can't log in until you verify your email(check junk). Employee accounts can create orders, brands, models, colors and edit. Customers can only view their orders. 
-
-We are currently using Github pages to access https://danielzfinger.github.io/GottaRunShoeTracker/ . I will add a custom URL and stand alone site once I add the final updates the owners would like me to do.
+If you create an account you will only have customer permissions. If you would like to use the main funcitonality please sign in with an employee account [[[***email: "dzfinge@clemson.edu" password: "Daniel123"***]]]
+Test site currently using Github pages to access https://danielzfinger.github.io/GottaRunShoeTracker/ .
