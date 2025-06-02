@@ -1,5 +1,5 @@
 # GottaRunShoeTracker
-
+# THIS IS NO LONGER BEING MAINTAINED
 Developed a service to create, track and store history of shoe orders performed at all 4 store locations in South Carolina.
 This service follows C.R.U.D principles and utilizes a front-end using React.js, CSS/HTML, a back-end on AWS through
 lambda(Python). Lambda works with Cognito for user storage and authentication and communicates to DynamoDB to
